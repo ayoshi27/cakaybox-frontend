@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Expend" ALTER COLUMN "date" SET DATA TYPE TEXT;

@@ -1,0 +1,16 @@
+.section {
+  & + .section {
+    margin-top: 20px;
+  }
+}
+
+.expendItem {
+  padding: 6px 8px;
+  border-bottom: 1px dotted #ccc;
+}
+
+.deleteButton,
+.editButton {
+  margin-left: 10px;
+  padding: 1px 5px;
+}

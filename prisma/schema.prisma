@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String?  @unique
+  image     String?
+  role      Role     @default(USER)
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Expend {
+  id              Int           @id @default(autoincrement())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  price           Int
+  description     String
+  date            String
+  category        Category      @relation(fields: [categoryId], references: [id])
+  categoryId      Int
+  payer           Payer         @relation(fields: [payerId], references: [id])
+  payerId         Int
+  budget          Budget        @relation(fields: [budgetId], references: [id])
+  budgetId        Int
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId Int
+  processed       Boolean       @default(false)
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  Expend    Expend[]
+}
+
+model Payer {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  Expend    Expend[]
+}
+
+model Budget {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  Expend    Expend[]
+}
+
+model PaymentMethod {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  Expend    Expend[]
+}
