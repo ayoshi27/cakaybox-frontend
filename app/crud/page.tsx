@@ -4,13 +4,17 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import styles from "./crud.module.scss";
+import ControlPanel from "./components/control-panel/ControlPanel";
+import { useDialog } from "../shared/dialog";
+import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 
 // queries
 const AllExpendsQuery = gql`
-  query {
-    expends {
+  query ($yearMonth: String) {
+    expends(yearMonth: $yearMonth) {
       id
       date
+      price
       description
       Category {
         name
@@ -18,18 +22,64 @@ const AllExpendsQuery = gql`
       Budget {
         name
       }
+      Payer {
+        name
+      }
+      PaymentMethod {
+        name
+      }
+      Budget {
+        name
+      }
+      processed
     }
   }
 `;
 
-const UpdateExpendMutation = gql`
-  mutation updateExpend($id: Int!, $description: String!) {
-    updateExpend(id: $id, description: $description) {
+const AllCategoriesQuery = gql`
+  query {
+    categories {
       id
-      description
+      name
     }
   }
 `;
+
+const AllPayersQuery = gql`
+  query {
+    payers {
+      id
+      name
+    }
+  }
+`;
+
+const AllBudgetsQuery = gql`
+  query {
+    budgets {
+      id
+      name
+    }
+  }
+`;
+
+const AllPaymentMethodsQuery = gql`
+  query {
+    paymentMethods {
+      id
+      name
+    }
+  }
+`;
+
+// const UpdateExpendMutation = gql`
+//   mutation updateExpend($id: Int!, $description: String!) {
+//     updateExpend(id: $id, description: $description) {
+//       id
+//       description
+//     }
+//   }
+// `;
 
 const CreateExpendMutation = gql`
   mutation createExpend(
@@ -73,48 +123,63 @@ const DeleteExpendMutation = gql`
 `;
 
 export default function CrudExpend() {
+  const [yearMonth, setYearMonth] = useState(dayjs().format("YYYY-MM"));
+  const { Dialog, open: openDialog, close: closeDialog } = useDialog();
+
   const {
     data: expends,
     loading: loadingExpends,
     error: errorWhileloadingExpends,
     refetch,
-  } = useQuery(AllExpendsQuery);
+  } = useQuery(AllExpendsQuery, {
+    variables: { yearMonth: yearMonth },
+  });
+
+  const {
+    data: categories,
+    loading: loadingCategories,
+    error: errorWhileLoadingCategories,
+  } = useQuery(AllCategoriesQuery);
+
+  const {
+    data: payers,
+    loading: loadingPayers,
+    error: errorWhileLoadingPayers,
+  } = useQuery(AllPayersQuery);
+
+  const { data: budgets, loading: loadingBudgets } = useQuery(AllBudgetsQuery);
+
+  const { data: paymentMethods, loading: loadingPaymentMethods } = useQuery(
+    AllPaymentMethodsQuery
+  );
 
   const [createExpend, { loading: loadingCreate, error: errorWhileCreating }] =
     useMutation(CreateExpendMutation);
-  const [updateExpend, { loading, error }] = useMutation(UpdateExpendMutation);
+  // const [updateExpend, { loading, error }] = useMutation(UpdateExpendMutation);
   const [
     deleteExpend,
     { loading: loadingDeletion, error: errorWhileDeletion },
   ] = useMutation(DeleteExpendMutation);
 
-  const [selectedId, setSelectedId] = useState(0);
-  const [selectedDescription, setSelectedDescription] = useState("");
-  const [addDescription, setAddDescription] = useState("");
-  const [addDate, setAddDate] = useState(dayjs().format("YYYY-MM-DD"));
-  const [addPrice, setAddPrice] = useState("0");
+  const selectItemLoading =
+    loadingCategories ||
+    loadingPayers ||
+    loadingBudgets ||
+    loadingPaymentMethods;
 
-  const addExpend = async () => {
-    const variables = {
-      price: Number(addPrice),
-      description: addDescription,
-      date: addDate,
-      categoryId: 24,
-      payerId: 3,
-      budgetId: 4,
-      paymentMethodId: 6,
-      processed: false,
-    };
+  const addExpend = async (variables: {
+    date: string;
+    price: number;
+    description: string;
+    categoryId: number;
+    payerId: number;
+    budgetId: number;
+    paymentMethodId: number;
+    processed: boolean;
+  }) => {
     await createExpend({ variables });
-    refetch();
-  };
-
-  const clickUpdateButton = () => {
-    const variables = {
-      id: selectedId,
-      description: selectedDescription,
-    };
-    updateExpend({ variables });
+    await refetch();
+    closeDialog();
   };
 
   const clickDeleteExpend = async (id: number) => {
@@ -125,90 +190,92 @@ export default function CrudExpend() {
     refetch();
   };
 
-  if (loadingExpends || loadingCreate || loadingDeletion || loading)
-    return <p>Loading...</p>;
+  function moveToAdjacentMonth(direction: "prev" | "next"): void {
+    const current = dayjs(yearMonth);
+    const adjacent =
+      direction === "prev"
+        ? current.subtract(1, "month")
+        : current.add(1, "month");
+    setYearMonth(adjacent.format("YYYY-MM"));
+  }
+
   if (errorWhileloadingExpends)
     return <p>Oh no... {errorWhileloadingExpends.message}</p>;
   if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.message}</p>;
   if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.message}</p>;
-  if (error) return <p>Oh no... {error.message}</p>;
+  // if (error) return <p>Oh no... {error.message}</p>;
 
   return (
     <>
-      <h1>支出管理</h1>
-      <section className={styles.section}>
-        <h2>支出更新</h2>
-        <p>
-          id:{" "}
-          <input
-            type="number"
-            value={selectedId}
-            onChange={(e) => setSelectedId(Number(e.currentTarget.value))}
-          />
-        </p>
-        <p>
-          description:{" "}
-          <input
-            type="text"
-            value={selectedDescription}
-            onChange={(e) => setSelectedDescription(e.currentTarget.value)}
-          />
-        </p>
-        <button onClick={clickUpdateButton}>更新</button>
-      </section>
-      <section className={styles.section}>
-        <h2>支出追加</h2>
-        <div>
-          <p>
-            date:{" "}
-            <input
-              type="date"
-              value={addDate}
-              onChange={(e) => setAddDate(e.currentTarget.value)}
-            />
-          </p>
-          <p>
-            price:{" "}
-            <input
-              type="text"
-              value={addPrice}
-              onChange={(e) => setAddPrice(e.currentTarget.value)}
-            />
-          </p>
-          <p>
-            description:{" "}
-            <input
-              type="text"
-              value={addDescription}
-              onChange={(e) => setAddDescription(e.currentTarget.value)}
-            />
-          </p>
-          <button onClick={addExpend}>追加</button>
+      <ControlPanel
+        yearMonth={yearMonth}
+        moveToAdjacentMonth={moveToAdjacentMonth}
+      />
+      <div className={styles.contentsContainer}>
+        <button className={styles.addExpendButton} onClick={openDialog}>
+          支出追加
+        </button>
+        <div className={styles.tableWrapper}>
+          <table className={styles.expendsTable}>
+            <thead>
+              <tr>
+                <th>日付</th>
+                <th>料金</th>
+                <th>内容</th>
+                <th>カテゴリー</th>
+                <th>支払者</th>
+                <th>支払方法</th>
+                <th>支払元</th>
+                <th>精算済</th>
+                <th>編集</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody>
+              {expends &&
+                expends.expends.map((expend: any) => (
+                  <tr className={styles.expendItem} key={expend.id}>
+                    <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
+                    <td>{expend.price}</td>
+                    <td>{expend.description}</td>
+                    <td>{expend.Category.name}</td>
+                    <td>{expend.Payer.name}</td>
+                    <td>{expend.PaymentMethod.name}</td>
+                    <td>{expend.Budget.name}</td>
+                    <td>{expend.processed ? "済" : "未"}</td>
+                    <td>
+                      <button
+                        className={styles.tableButton}
+                        onClick={() => console.log(expend.id)}
+                      >
+                        編集
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className={styles.tableButton}
+                        onClick={() => clickDeleteExpend(expend.id)}
+                      >
+                        削除
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
-      </section>
-      <section className={styles.section}>
-        <h2>支出一覧</h2>
-        <ul>
-          {expends.expends.map((expend: any) => (
-            <li className={styles.expendItem} key={expend.id}>
-              {expend.id} {dayjs(expend.date).format("YYYY/MM/DD")}{" "}
-              {expend.description} {expend.Category.name} {expend.Budget.name}
-              <button
-                className={styles.editButton}
-                onClick={() => setSelectedId(Number(expend.id))}
-              >
-                編集
-              </button>
-              <button
-                className={styles.deleteButton}
-                onClick={() => clickDeleteExpend(expend.id)}
-              >
-                X
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+      </div>
+
+      {!selectItemLoading && (
+        <AddExpendsDialog
+          dialog={Dialog}
+          categories={categories}
+          payers={payers}
+          budgets={budgets}
+          paymentMethods={paymentMethods}
+          addExpend={addExpend}
+        />
+      )}
     </>
   );
 }

@@ -1,16 +1,115 @@
-.section {
-  & + .section {
-    margin-top: 20px;
+@mixin button() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 72px;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.contentsContainer {
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 7px;
+  border-radius: 5px;
+}
+
+.addExpendButton {
+  @include button();
+  width: 90px;
+  background-color: #1976d2;
+  color: #fff;
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px,
+    rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+
+  &:hover {
+    background: darken(#1976d2, 10);
   }
 }
 
-.expendItem {
-  padding: 6px 8px;
-  border-bottom: 1px dotted #ccc;
+.tableWrapper {
+  width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+}
+.expendsTable {
+  font-size: 14px;
+}
+.expendsTable th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+
+  &:nth-of-type(1) {
+    width: 100px;
+  }
+  &:nth-of-type(2) {
+    min-width: 100px;
+    text-align: right;
+  }
+  &:nth-of-type(3) {
+    min-width: 300px;
+  }
+  &:nth-of-type(4) {
+    min-width: 100px;
+  }
+  &:nth-of-type(5) {
+    min-width: 100px;
+  }
+  &:nth-of-type(6) {
+    min-width: 100px;
+  }
+  &:nth-of-type(7) {
+    min-width: 100px;
+  }
+  &:nth-of-type(8) {
+    min-width: 50px;
+  }
+  &:nth-of-type(9) {
+    min-width: 100px;
+  }
+  &:nth-of-type(10) {
+    min-width: 100px;
+  }
+  &:nth-of-type(11) {
+    min-width: 100px;
+  }
+}
+.expendsTable td {
+  &:nth-of-type(2) {
+    text-align: right;
+  }
+}
+.tableButton {
+  padding: 0.6em 1.2em;
+  background-color: #f9f9f9;
+
+  &:hover {
+    background: darken(#f9f9f9, 10);
+  }
 }
 
-.deleteButton,
-.editButton {
-  margin-left: 10px;
-  padding: 1px 5px;
+.dialogTitle {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.formItem {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.saveButton {
+  @include button();
+  width: 90px;
+  background-color: #1976d2;
+  color: #fff;
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px,
+    rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+
+  &:hover {
+    background: darken(#1976d2, 10);
+  }
 }

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { builder } from "../builder";
 
 builder.prismaObject("Expend", {
@@ -23,8 +24,17 @@ builder.prismaObject("Expend", {
 builder.queryField("expends", (t) =>
   t.prismaField({
     type: ["Expend"],
-    resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.expend.findMany({ ...query, orderBy: { id: "asc" } }),
+    args: {
+      yearMonth: t.arg.string({ required: false }),
+    },
+    resolve: (query, _parent, args, _ctx, _info) =>
+      prisma.expend.findMany({
+        ...query,
+        orderBy: { date: "desc" },
+        where: {
+          date: { startsWith: args.yearMonth || dayjs().format("YYYY-MM") },
+        },
+      }),
   })
 );
 
