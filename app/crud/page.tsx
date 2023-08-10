@@ -7,34 +7,9 @@ import styles from "./crud.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
-
+import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
+import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 // queries
-const AllExpendsQuery = gql`
-  query ($yearMonth: String) {
-    expends(yearMonth: $yearMonth) {
-      id
-      date
-      price
-      description
-      Category {
-        name
-      }
-      Budget {
-        name
-      }
-      Payer {
-        name
-      }
-      PaymentMethod {
-        name
-      }
-      Budget {
-        name
-      }
-      processed
-    }
-  }
-`;
 
 const AllCategoriesQuery = gql`
   query {
@@ -81,39 +56,6 @@ const AllPaymentMethodsQuery = gql`
 //   }
 // `;
 
-const CreateExpendMutation = gql`
-  mutation createExpend(
-    $price: Int!
-    $description: String!
-    $date: String!
-    $categoryId: Int!
-    $payerId: Int!
-    $budgetId: Int!
-    $paymentMethodId: Int!
-    $processed: Boolean!
-  ) {
-    createExpend(
-      price: $price
-      description: $description
-      date: $date
-      categoryId: $categoryId
-      payerId: $payerId
-      budgetId: $budgetId
-      paymentMethodId: $paymentMethodId
-      processed: $processed
-    ) {
-      price
-      description
-      date
-      categoryId
-      payerId
-      budgetId
-      paymentMethodId
-      processed
-    }
-  }
-`;
-
 const DeleteExpendMutation = gql`
   mutation deleteExpend($id: Int!) {
     deleteExpend(id: $id) {
@@ -127,13 +69,11 @@ export default function CrudExpend() {
   const { Dialog, open: openDialog, close: closeDialog } = useDialog();
 
   const {
-    data: expends,
+    expends,
     loading: loadingExpends,
     error: errorWhileloadingExpends,
     refetch,
-  } = useQuery(AllExpendsQuery, {
-    variables: { yearMonth: yearMonth },
-  });
+  } = useAllExpendsQuery({ yearMonth: yearMonth });
 
   const {
     data: categories,
@@ -153,8 +93,9 @@ export default function CrudExpend() {
     AllPaymentMethodsQuery
   );
 
-  const [createExpend, { loading: loadingCreate, error: errorWhileCreating }] =
-    useMutation(CreateExpendMutation);
+  const { createExpend, loadingCreate, errorWhileCreating } =
+    useCreateExpendMutation();
+
   // const [updateExpend, { loading, error }] = useMutation(UpdateExpendMutation);
   const [
     deleteExpend,
@@ -182,6 +123,10 @@ export default function CrudExpend() {
     closeDialog();
   };
 
+  /**
+   * 指定されたidの支出レコードを削除する
+   * @param id - 支出レコードのid
+   */
   const clickDeleteExpend = async (id: number) => {
     const variables = {
       id: Number(id),
@@ -190,6 +135,10 @@ export default function CrudExpend() {
     refetch();
   };
 
+  /**
+   * 引数に応じて前月または翌月に移動する
+   * @param direction - "prev" or "next"
+   */
   function moveToAdjacentMonth(direction: "prev" | "next"): void {
     const current = dayjs(yearMonth);
     const adjacent =
@@ -233,7 +182,7 @@ export default function CrudExpend() {
             </thead>
             <tbody>
               {expends &&
-                expends.expends.map((expend: any) => (
+                expends.map((expend: any) => (
                   <tr className={styles.expendItem} key={expend.id}>
                     <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
                     <td>{expend.price}</td>
