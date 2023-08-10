@@ -7,9 +7,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 export default function ControlPanel(props: {
   yearMonth: string;
   moveToAdjacentMonth: (direction: "prev" | "next") => void;
-  navigateToCountingPage: () => void;
+  navigateToExpnedsPage: () => void;
 }) {
-  const { navigateToCountingPage } = props;
+  const { navigateToExpnedsPage } = props;
 
   return (
     <div className={styles.controlPanel}>
@@ -21,7 +21,7 @@ export default function ControlPanel(props: {
         前月
       </button>
       <span className={styles.currentYearMonth}>
-        {dayjs(props.yearMonth).format("YYYY年MM月")}の支出一覧
+        {dayjs(props.yearMonth).format("YYYY年MM月")}の支出集計
       </span>
       <button
         className={styles.nextButton}
@@ -32,9 +32,9 @@ export default function ControlPanel(props: {
       </button>
       <button
         className={styles.toCountingButton}
-        onClick={navigateToCountingPage}
+        onClick={navigateToExpnedsPage}
       >
-        {dayjs(props.yearMonth).format("YYYY年MM月")}の支出集計
+        {dayjs(props.yearMonth).format("YYYY年MM月")}の支出一覧
       </button>
     </div>
   );

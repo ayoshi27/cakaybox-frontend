@@ -2,6 +2,7 @@
 
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import styles from "./expends.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
@@ -64,7 +65,8 @@ const DeleteExpendMutation = gql`
   }
 `;
 
-export default function CrudExpend() {
+export default function Expends() {
+  const router = useRouter();
   const [yearMonth, setYearMonth] = useState(dayjs().format("YYYY-MM"));
   const { Dialog, open: openDialog, close: closeDialog } = useDialog();
 
@@ -148,6 +150,11 @@ export default function CrudExpend() {
     setYearMonth(adjacent.format("YYYY-MM"));
   }
 
+  /** 表示している年月の支出集計画面に遷移する */
+  function navigateToCountingPage(): void {
+    router.push("/countings");
+  }
+
   if (errorWhileloadingExpends)
     return <p>Oh no... {errorWhileloadingExpends.message}</p>;
   if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.message}</p>;
@@ -159,6 +166,7 @@ export default function CrudExpend() {
       <ControlPanel
         yearMonth={yearMonth}
         moveToAdjacentMonth={moveToAdjacentMonth}
+        navigateToCountingPage={navigateToCountingPage}
       />
       <div className={styles.contentsContainer}>
         <button className={styles.addExpendButton} onClick={openDialog}>
