@@ -7,6 +7,7 @@ builder.prismaObject('Category', {
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
     name: t.exposeString('name'),
+    limit: t.exposeInt('limit'),
     Expend: t.relation('Expend'),
   })
 })

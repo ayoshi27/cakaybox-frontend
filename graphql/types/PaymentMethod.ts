@@ -11,7 +11,6 @@ builder.prismaObject('PaymentMethod', {
   })
 })
 
-
 builder.queryField("paymentMethods", (t) =>
   t.prismaField({
     type: ['PaymentMethod'],

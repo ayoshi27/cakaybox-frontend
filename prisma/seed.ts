@@ -51,17 +51,52 @@ async function main() {
   //     { name: "李沙", code: "risa" },
   //   ],
   // });
-  await prisma.expend.create({
-    data: {
-      date: '2023-07-07',
-      price: 1000,
-      description: "test",
-      categoryId: 21,
-      budgetId: 4,
-      paymentMethodId: 6,
-      payerId: 3,
-    }
-  })
+  // await prisma.expend.create({
+  //   data: {
+  //     date: '2023-07-07',
+  //     price: 1000,
+  //     description: "test",
+  //     categoryId: 21,
+  //     budgetId: 4,
+  //     paymentMethodId: 6,
+  //     payerId: 3,
+  //   }
+  // })
+
+  // NOTE: paymentMethod
+  [7, 6, 8, 9, 10].forEach(async (paymentMethodId) => {
+    await prisma.paymentMethodCountingItem.create({
+      data: {
+        paymentMethodId: paymentMethodId,
+        countingItemId: 3,
+      },
+    });
+  });
+
+  // NOTE: payer
+  //       3: 明弘
+  //       4: 李沙
+  [4].forEach(async (payerId) => {
+    await prisma.payerCountingItem.create({
+      data: {
+        payerId: payerId,
+        countingItemId: 3,
+      },
+    });
+  });
+
+  // NOTE: budet
+  //       4: 共同支出
+  //       5: 明弘
+  //       6: 李沙
+  [4].forEach(async (budgetId) => {
+    await prisma.budgetCountingItem.create({
+      data: {
+        budgetId: budgetId,
+        countingItemId: 3,
+      },
+    });
+  });
 }
 
 main()

@@ -49,32 +49,84 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
+  limit     Int      @default(0)
   Expend    Expend[]
 }
 
 model Payer {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  Expend    Expend[]
+  id                Int                 @id @default(autoincrement())
+  code              String              @unique
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  name              String
+  Expend            Expend[]
+  PayerCountingItem PayerCountingItem[]
 }
 
 model Budget {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  Expend    Expend[]
+  id                 Int                  @id @default(autoincrement())
+  code               String               @unique
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  name               String
+  Expend             Expend[]
+  BudgetCountingItem BudgetCountingItem[]
 }
 
 model PaymentMethod {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  Expend    Expend[]
+  id                                       Int                         @id @default(autoincrement())
+  code                                     String                      @unique
+  createdAt                                DateTime                    @default(now())
+  updatedAt                                DateTime                    @updatedAt
+  name                                     String
+  Expend                                   Expend[]
+  PaymentMethodCountingItemToPaymentMethod PaymentMethodCountingItem[]
+}
+
+model CountingItem {
+  id                                      Int                         @id @default(autoincrement())
+  createdAt                               DateTime                    @default(now())
+  updatedAt                               DateTime                    @updatedAt
+  name                                    String
+  code                                    String                      @unique
+  processed                               Boolean[]                   @default([])
+  CountingItemCountingItemToPaymentMethod PaymentMethodCountingItem[]
+  BudgetCountingItem                      BudgetCountingItem[]
+  PayerCountingItem                       PayerCountingItem[]
+}
+
+model PaymentMethodCountingItem {
+  id              Int           @id @default(autoincrement())
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId Int
+  countingItemId  Int
+  countingItem    CountingItem  @relation(fields: [countingItemId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([paymentMethodId, countingItemId])
+}
+
+model BudgetCountingItem {
+  id             Int          @id @default(autoincrement())
+  budget         Budget       @relation(fields: [budgetId], references: [id])
+  budgetId       Int
+  countingItemId Int
+  countingItem   CountingItem @relation(fields: [countingItemId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([budgetId, countingItemId])
+}
+
+model PayerCountingItem {
+  id             Int          @id @default(autoincrement())
+  payer          Payer        @relation(fields: [payerId], references: [id])
+  payerId        Int
+  countingItemId Int
+  countingItem   CountingItem @relation(fields: [countingItemId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([payerId, countingItemId])
 }
