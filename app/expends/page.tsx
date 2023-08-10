@@ -3,7 +3,7 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
-import styles from "./crud.module.scss";
+import styles from "./expends.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
