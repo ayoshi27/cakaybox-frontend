@@ -35,13 +35,38 @@ export default function AddExpendsDialog(props: {
     Number(categories.categories[0].id)
   );
   const [payerId, setPayerId] = useState(Number(payers.payers[0].id));
-  const [budgetId, setBudgetId] = useState(
-    Number(paymentMethods.paymentMethods[0].id)
-  );
+  const [budgetId, setBudgetId] = useState(Number(budgets.budgets[0].id));
   const [paymentMethodId, setPaymentMethodId] = useState(
     Number(paymentMethods.paymentMethods[0].id)
   );
   const [isProcessed, setIsProcessed] = useState(false);
+
+  /** 保存ボタンを押した時の処理 */
+  function handleSaveButton(): void {
+    addExpend({
+      date,
+      price: Number(price),
+      description,
+      categoryId,
+      payerId,
+      budgetId,
+      paymentMethodId,
+      processed: isProcessed,
+    });
+    resetFormValue();
+  }
+
+  /** フォームの値をリセットする */
+  function resetFormValue(): void {
+    setDate(dayjs().format("YYYY-MM-DD"));
+    setPrice("0");
+    setDescription("");
+    setCategoryId(Number(categories.categories[0].id));
+    setPayerId(Number(payers.payers[0].id));
+    setBudgetId(Number(budgets.budgets[0].id));
+    setPaymentMethodId(Number(paymentMethods.paymentMethods[0].id));
+    setIsProcessed(false);
+  }
 
   return (
     <Dialog>
@@ -135,21 +160,7 @@ export default function AddExpendsDialog(props: {
         </label>
       </div>
 
-      <button
-        className={styles.saveButton}
-        onClick={() =>
-          addExpend({
-            price: Number(price),
-            description: description,
-            date: date,
-            categoryId: categoryId,
-            payerId: payerId,
-            budgetId: budgetId,
-            paymentMethodId: paymentMethodId,
-            processed: isProcessed,
-          })
-        }
-      >
+      <button className={styles.saveButton} onClick={handleSaveButton}>
         追加
       </button>
     </Dialog>
