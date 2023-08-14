@@ -9,6 +9,7 @@ import { useDialog } from "../../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
+import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
 // queries
 
 const AllCategoriesQuery = gql`
@@ -76,11 +77,8 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     refetch,
   } = useAllExpendsQuery({ yearMonth: yearMonth });
 
-  const {
-    data: categories,
-    loading: loadingCategories,
-    error: errorWhileLoadingCategories,
-  } = useQuery(AllCategoriesQuery);
+  const { categories, loadingCategories, errorWhileLoadingCategories } =
+    useAllCategoriesQuery();
 
   const {
     data: payers,
@@ -190,7 +188,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
             <tbody>
               {expends &&
                 expends.map((expend: any) => (
-                  <tr className={styles.expendItem} key={expend.id}>
+                  <tr key={expend.id}>
                     <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
                     <td>{expend.price}</td>
                     <td>{expend.description}</td>

@@ -31,9 +31,7 @@ export default function AddExpendsDialog(props: {
   const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState(
-    Number(categories.categories[0].id)
-  );
+  const [categoryId, setCategoryId] = useState(Number(categories[0].id));
   const [payerId, setPayerId] = useState(Number(payers.payers[0].id));
   const [budgetId, setBudgetId] = useState(Number(budgets.budgets[0].id));
   const [paymentMethodId, setPaymentMethodId] = useState(
@@ -61,7 +59,7 @@ export default function AddExpendsDialog(props: {
     setDate(dayjs().format("YYYY-MM-DD"));
     setPrice("0");
     setDescription("");
-    setCategoryId(Number(categories.categories[0].id));
+    setCategoryId(Number(categories[0].id));
     setPayerId(Number(payers.payers[0].id));
     setBudgetId(Number(budgets.budgets[0].id));
     setPaymentMethodId(Number(paymentMethods.paymentMethods[0].id));
@@ -102,7 +100,7 @@ export default function AddExpendsDialog(props: {
       <div className={styles.formItem}>
         カテゴリー:
         <select onChange={(e) => setCategoryId(Number(e.currentTarget.value))}>
-          {categories.categories.map((category: any) => (
+          {categories.map((category: any) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
