@@ -5,7 +5,8 @@ import dayjs from "dayjs";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import styles from "./countings.module.scss";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
-
+import { useAllCountingItemsQuery } from "./hooks/useAllCountingItemsQuery";
+import { useALLExtendsForCalcurationQuery } from "./hooks/useALLExtendsForCalcurationQuery";
 export default function Counting({
   params,
 }: {
@@ -14,8 +15,70 @@ export default function Counting({
   const { yearMonth } = params;
   const router = useRouter();
 
-  const { categories, loadingCategories, errorWhileLoadingCategories } =
-    useAllCategoriesQuery();
+  const { categories, loadingCategories } = useAllCategoriesQuery();
+  const { countingItems, loadingCountingItems } = useAllCountingItemsQuery();
+  const { expends, loadingExpends } = useALLExtendsForCalcurationQuery({
+    yearMonth,
+  });
+
+  /**
+   * 引数で渡される支出の合計金額を算出する
+   * @param expends - 支出一覧
+   */
+  const getSumPrice = (expends: any) => {
+    return expends?.reduce((acc: number, expend: any) => acc + expend.price, 0);
+  };
+
+  /**
+   * 引数で渡されるカテゴリーIDに紐づく支出一覧を返す
+   * @param categoryId - カテゴリーID
+   */
+  const filterExpendsByCategory = (categoryId: string) => {
+    return expends?.filter((expend: any) => expend.Category.id === categoryId);
+  };
+
+  const tableRecords = categories?.map((category: any) => {
+    const filteredExpendsByCategory = filterExpendsByCategory(category.id);
+    const sum = getSumPrice(filteredExpendsByCategory);
+    const records: any = {
+      id: category.id,
+      name: category.name,
+      sum,
+      rest: category.limit - sum,
+    };
+
+    countingItems?.forEach((countingItem: any) => {
+      const filteredExpendsByCountingItem = filteredExpendsByCategory?.filter(
+        (expends: any) => {
+          const payerFilter =
+            countingItem.PayerCountingItem.length > 0
+              ? countingItem.PayerCountingItem.map(
+                  (item: any) => item.payer.id
+                ).includes(expends.Payer.id)
+              : true;
+
+          const budgetFilter =
+            countingItem.BudgetCountingItem.length > 0
+              ? countingItem.BudgetCountingItem.map(
+                  (item: any) => item.budget.id
+                ).includes(expends.Budget.id)
+              : true;
+
+          const paymentMethodFilter =
+            countingItem.PaymentMethodCountingItem.length > 0
+              ? countingItem.PaymentMethodCountingItem.map(
+                  (item: any) => item.paymentMethod.id
+                ).includes(expends.PaymentMethod.id)
+              : true;
+
+          return payerFilter && budgetFilter && paymentMethodFilter;
+        }
+      );
+
+      records[countingItem.code] = getSumPrice(filteredExpendsByCountingItem);
+    });
+    return records;
+  });
 
   /**
    * 引数に応じて前月または翌月に移動する
@@ -35,9 +98,8 @@ export default function Counting({
     router.push(`/expends/${yearMonth}`);
   }
 
-  if (loadingCategories) return <p>Now Loading...</p>;
-
-  console.log(categories)
+  if (loadingCategories || loadingCountingItems || loadingExpends)
+    return <p>Now Loading...</p>;
 
   return (
     <>
@@ -54,15 +116,19 @@ export default function Counting({
                 <th>カテゴリー</th>
                 <th>合計</th>
                 <th>残り</th>
+                {countingItems.map((countingItem: any) => (
+                  <th key={countingItem.id}>{countingItem.name}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {categories.length &&
-                categories.map((category: any) => (
-                  <tr key={category.id}>
-                    <td>{category.name}</td>
-                    <td>9,000</td>
-                    <td>1,000</td>
+              {tableRecords.length &&
+                tableRecords.map((record: any) => (
+                  <tr key={record.id}>
+                    {Object.keys(record).map((key, index) => {
+                      if (key === "id") return null;
+                      return <td key={index}>{record[key]}</td>;
+                    })}
                   </tr>
                 ))}
             </tbody>

@@ -5,6 +5,7 @@ const AllCategoriesQuery = gql`
     categories {
       id
       name
+      limit
     }
   }
 `;
