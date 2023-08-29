@@ -14,10 +14,10 @@ builder.prismaObject("Expend", {
     budgetId: t.exposeInt("budgetId"),
     paymentMethodId: t.exposeInt("paymentMethodId"),
     processed: t.exposeBoolean("processed"),
-    Category: t.relation("category"),
-    Payer: t.relation("payer"),
-    Budget: t.relation("budget"),
-    PaymentMethod: t.relation("paymentMethod"),
+    category: t.relation("category"),
+    payer: t.relation("payer"),
+    budget: t.relation("budget"),
+    paymentMethod: t.relation("paymentMethod"),
   }),
 });
 

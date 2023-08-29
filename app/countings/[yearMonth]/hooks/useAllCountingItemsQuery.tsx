@@ -6,20 +6,14 @@ const AllCountingItemsQuery = gql`
       id
       code
       name
-      PayerCountingItem {
-        payer {
-          id
-        }
+      payers {
+        id
       }
-      BudgetCountingItem {
-        budget {
-          id
-        }
+      budgets {
+        id
       }
-      PaymentMethodCountingItem {
-        paymentMethod {
-          id
-        }
+      paymentMethods {
+        id
       }
     }
   }
@@ -28,15 +22,13 @@ const AllCountingItemsQuery = gql`
 /** 登録されているすべての集計項目を取得する */
 export function useAllCountingItemsQuery() {
   const {
-    data: countingItems,
+    data,
     loading: loadingCountingItems,
     error: errorWhileLoadingCountingItems,
   } = useQuery(AllCountingItemsQuery);
 
-  console.log("countingItems: ", countingItems);
-
   return {
-    countingItems: countingItems?.countingItem,
+    countingItems: data?.countingItem,
     loadingCountingItems,
     errorWhileLoadingCountingItems,
   };

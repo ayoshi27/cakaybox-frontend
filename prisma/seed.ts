@@ -56,47 +56,93 @@ async function main() {
   //     date: '2023-07-07',
   //     price: 1000,
   //     description: "test",
-  //     categoryId: 21,
-  //     budgetId: 4,
-  //     paymentMethodId: 6,
-  //     payerId: 3,
+  //     categoryId: 1,
+  //     budgetId: 1,
+  //     paymentMethodId: 1,
+  //     payerId: 1,
   //   }
   // })
 
-  // NOTE: paymentMethod
-  [7, 6, 8, 9, 10].forEach(async (paymentMethodId) => {
-    await prisma.paymentMethodCountingItem.create({
-      data: {
-        paymentMethodId: paymentMethodId,
-        countingItemId: 3,
+  // await prisma.countingItem.create({
+  //   data: {
+  //     name: 'サンプル集計項目1（共同visa明弘）',
+  //     code: 'sample1',
+  //     processed: [true, false],
+  //     paymentMethods: {
+  //       create: [
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 1,
+  //             },
+  //           }
+  //         },
+  //       ],
+  //     },
+  //     budgets: {
+  //       create: [
+  //         {
+  //           budget: {
+  //             connect: {
+  //               id: 1,
+  //             },
+  //           }
+  //         },
+  //       ],
+  //     },
+  //     payers: {
+  //       create: [
+  //         {
+  //           payer: {
+  //             connect: {
+  //               id: 1,
+  //             },
+  //           }
+  //         },
+  //       ],
+  //     },
+  //   },
+  // })
+  await prisma.countingItem.create({
+    data: {
+      name: 'サンプル集計項目2（共同jcb李沙）',
+      code: 'sample2',
+      processed: [true, false],
+      paymentMethods: {
+        create: [
+          {
+            paymentMethod: {
+              connect: {
+                id: 2,
+              },
+            }
+          },
+        ],
       },
-    });
-  });
-
-  // NOTE: payer
-  //       3: 明弘
-  //       4: 李沙
-  [4].forEach(async (payerId) => {
-    await prisma.payerCountingItem.create({
-      data: {
-        payerId: payerId,
-        countingItemId: 3,
+      budgets: {
+        create: [
+          {
+            budget: {
+              connect: {
+                id: 1,
+              },
+            }
+          },
+        ],
       },
-    });
-  });
-
-  // NOTE: budet
-  //       4: 共同支出
-  //       5: 明弘
-  //       6: 李沙
-  [4].forEach(async (budgetId) => {
-    await prisma.budgetCountingItem.create({
-      data: {
-        budgetId: budgetId,
-        countingItemId: 3,
+      payers: {
+        create: [
+          {
+            payer: {
+              connect: {
+                id: 2,
+              },
+            }
+          },
+        ],
       },
-    });
-  });
+    },
+  })
 }
 
 main()

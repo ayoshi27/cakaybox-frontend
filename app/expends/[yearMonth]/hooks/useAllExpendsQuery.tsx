@@ -7,19 +7,19 @@ const AllExpendsQuery = gql`
       date
       price
       description
-      Category {
+      category {
         name
       }
-      Budget {
+      budget {
         name
       }
-      Payer {
+      payer {
         name
       }
-      PaymentMethod {
+      paymentMethod {
         name
       }
-      Budget {
+      budget {
         name
       }
       processed

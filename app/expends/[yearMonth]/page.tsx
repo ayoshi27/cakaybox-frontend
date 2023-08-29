@@ -192,10 +192,10 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                     <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
                     <td>{expend.price}</td>
                     <td>{expend.description}</td>
-                    <td>{expend.Category.name}</td>
-                    <td>{expend.Payer.name}</td>
-                    <td>{expend.PaymentMethod.name}</td>
-                    <td>{expend.Budget.name}</td>
+                    <td>{expend.category.name}</td>
+                    <td>{expend.payer.name}</td>
+                    <td>{expend.paymentMethod.name}</td>
+                    <td>{expend.budget.name}</td>
                     <td>{expend.processed ? "済" : "未"}</td>
                     <td>
                       <button

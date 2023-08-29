@@ -8,16 +8,40 @@ builder.prismaObject("CountingItem", {
     name: t.exposeString("name"),
     code: t.exposeString("code"),
     processed: t.exposeBooleanList("processed"),
-    PaymentMethodCountingItem: t.relation("PaymentMethodCountingItem"),
-    BudgetCountingItem: t.relation("BudgetCountingItem"),
-    PayerCountingItem: t.relation("PayerCountingItem"),
+    payers: t.relation("payers"),
+    paymentMethods: t.relation("paymentMethods"),
+    budgets: t.relation("budgets"),
+  }),
+});
+
+builder.prismaObject("PayerOnCountingItem", {
+  fields: (t) => ({
+    id: t.exposeID("id"),
+    payer: t.relation("payer"),
+    countingItem: t.relation("countingItem"),
+  }),
+});
+
+builder.prismaObject("PaymentMethodOnCountingItem", {
+  fields: (t) => ({
+    id: t.exposeID("id"),
+    paymentMethod: t.relation("paymentMethod"),
+    countingItem: t.relation("countingItem"),
+  }),
+});
+
+builder.prismaObject("BudgetOnCountingItem", {
+  fields: (t) => ({
+    id: t.exposeID("id"),
+    budget: t.relation("budget"),
+    countingItem: t.relation("countingItem"),
   }),
 });
 
 builder.queryField("countingItem", (t) =>
   t.prismaField({
-    type: ['CountingItem'],
+    type: ["CountingItem"],
     resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.countingItem.findMany({ ...query })
+      prisma.countingItem.findMany({ ...query }),
   })
-)
+);

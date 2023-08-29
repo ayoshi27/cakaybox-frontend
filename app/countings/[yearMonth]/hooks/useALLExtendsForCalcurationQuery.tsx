@@ -4,22 +4,23 @@ const AllExtendsForCountingQuery = gql`
   query ($yearMonth: String) {
     expends(yearMonth: $yearMonth) {
       price
-      Category {
+      category {
         id
         name
       }
-      PaymentMethod {
+      paymentMethod {
         id
         name
       }
-      Budget {
+      budget {
         id
         name
       }
-      Payer {
+      payer {
         id
         name
       }
+      processed
     }
   }
 `;

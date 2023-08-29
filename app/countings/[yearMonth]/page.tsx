@@ -34,7 +34,7 @@ export default function Counting({
    * @param categoryId - カテゴリーID
    */
   const filterExpendsByCategory = (categoryId: string) => {
-    return expends?.filter((expend: any) => expend.Category.id === categoryId);
+    return expends?.filter((expend: any) => expend.category.id === categoryId);
   };
 
   const tableRecords = categories?.map((category: any) => {
@@ -49,26 +49,26 @@ export default function Counting({
 
     countingItems?.forEach((countingItem: any) => {
       const filteredExpendsByCountingItem = filteredExpendsByCategory?.filter(
-        (expends: any) => {
+        (expend: any) => {
           const payerFilter =
-            countingItem.PayerCountingItem.length > 0
-              ? countingItem.PayerCountingItem.map(
-                  (item: any) => item.payer.id
-                ).includes(expends.Payer.id)
+            countingItem.payers.length > 0
+              ? countingItem.payers.map(
+                  (item: any) => item.id
+                ).includes(expend.payer.id)
               : true;
 
           const budgetFilter =
-            countingItem.BudgetCountingItem.length > 0
-              ? countingItem.BudgetCountingItem.map(
-                  (item: any) => item.budget.id
-                ).includes(expends.Budget.id)
+            countingItem.budgets.length > 0
+              ? countingItem.budgets.map(
+                  (item: any) => item.id
+                ).includes(expend.budget.id)
               : true;
 
           const paymentMethodFilter =
-            countingItem.PaymentMethodCountingItem.length > 0
-              ? countingItem.PaymentMethodCountingItem.map(
-                  (item: any) => item.paymentMethod.id
-                ).includes(expends.PaymentMethod.id)
+            countingItem.paymentMethods.length > 0
+              ? countingItem.paymentMethods.map(
+                  (item: any) => item.id
+                ).includes(expend.paymentMethod.id)
               : true;
 
           return payerFilter && budgetFilter && paymentMethodFilter;
