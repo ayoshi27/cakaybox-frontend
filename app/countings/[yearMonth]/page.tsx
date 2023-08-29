@@ -53,23 +53,23 @@ export default function Counting({
           const payerFilter =
             countingItem.payers.length > 0
               ? countingItem.payers.map(
-                  (item: any) => item.id
+                  (item: any) => item.payer.id
                 ).includes(expend.payer.id)
-              : true;
+              : false;
 
           const budgetFilter =
             countingItem.budgets.length > 0
               ? countingItem.budgets.map(
-                  (item: any) => item.id
+                  (item: any) => item.budget.id
                 ).includes(expend.budget.id)
-              : true;
+              : false;
 
           const paymentMethodFilter =
             countingItem.paymentMethods.length > 0
               ? countingItem.paymentMethods.map(
-                  (item: any) => item.id
+                  (item: any) => item.paymentMethod.id
                 ).includes(expend.paymentMethod.id)
-              : true;
+              : false;
 
           return payerFilter && budgetFilter && paymentMethodFilter;
         }

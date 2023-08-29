@@ -105,15 +105,43 @@ async function main() {
   // })
   await prisma.countingItem.create({
     data: {
-      name: 'サンプル集計項目2（共同jcb李沙）',
-      code: 'sample2',
+      name: '共同支出（明弘支払）',
+      code: 'shared-akihiro',
       processed: [true, false],
       paymentMethods: {
         create: [
           {
             paymentMethod: {
               connect: {
+                id: 1,
+              },
+            }
+          },
+          {
+            paymentMethod: {
+              connect: {
                 id: 2,
+              },
+            }
+          },
+          {
+            paymentMethod: {
+              connect: {
+                id: 3,
+              },
+            }
+          },
+          {
+            paymentMethod: {
+              connect: {
+                id: 4,
+              },
+            }
+          },
+          {
+            paymentMethod: {
+              connect: {
+                id: 5,
               },
             }
           },
@@ -135,7 +163,7 @@ async function main() {
           {
             payer: {
               connect: {
-                id: 2,
+                id: 1,
               },
             }
           },
@@ -143,6 +171,11 @@ async function main() {
       },
     },
   })
+  // await prisma.countingItem.delete({
+  //   where: {
+  //     id: 1,
+  //   },
+  // });
 }
 
 main()

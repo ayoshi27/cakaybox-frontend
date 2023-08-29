@@ -7,13 +7,19 @@ const AllCountingItemsQuery = gql`
       code
       name
       payers {
-        id
+        payer {
+          id
+        }
       }
       budgets {
-        id
+        budget {
+          id
+        }
       }
       paymentMethods {
-        id
+        paymentMethod {
+          id
+        }
       }
     }
   }
