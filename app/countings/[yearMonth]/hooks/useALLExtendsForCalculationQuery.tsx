@@ -4,6 +4,7 @@ const AllExtendsForCountingQuery = gql`
   query ($yearMonth: String) {
     expends(yearMonth: $yearMonth) {
       price
+      description
       category {
         id
         name
@@ -29,7 +30,7 @@ const AllExtendsForCountingQuery = gql`
  * 指定した年月の支出（集計用）を全件取得する
  * @param variables - yearMonth (e.g. 2021-01)
  */
-export function useALLExtendsForCalcurationQuery(variables: { yearMonth: string }) {
+export function useALLExtendsForCalculationQuery(variables: { yearMonth: string }) {
   const { data, loading, error, refetch } = useQuery(AllExtendsForCountingQuery, {
     variables,
   });

@@ -5,6 +5,16 @@
   border-radius: 5px;
 }
 
+.tableSection:not(:last-of-type) {
+  margin-bottom: 40px;
+}
+
+.tableTitle {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .tableWrapper {
   width: 100%;
   max-height: 70vh;

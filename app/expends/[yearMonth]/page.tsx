@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import styles from "./expends.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
@@ -10,43 +10,9 @@ import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
-// queries
-
-const AllCategoriesQuery = gql`
-  query {
-    categories {
-      id
-      name
-    }
-  }
-`;
-
-const AllPayersQuery = gql`
-  query {
-    payers {
-      id
-      name
-    }
-  }
-`;
-
-const AllBudgetsQuery = gql`
-  query {
-    budgets {
-      id
-      name
-    }
-  }
-`;
-
-const AllPaymentMethodsQuery = gql`
-  query {
-    paymentMethods {
-      id
-      name
-    }
-  }
-`;
+import { useAllPayersQuery } from "@/app/shared/hooks/useAllPayersQuery";
+import { useAllBudgetsQuery } from "@/app/shared/hooks/useAllBudgetsQuery";
+import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 
 // const UpdateExpendMutation = gql`
 //   mutation updateExpend($id: Int!, $description: String!) {
@@ -80,17 +46,17 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { categories, loadingCategories, errorWhileLoadingCategories } =
     useAllCategoriesQuery();
 
+  const { payers, loadingPayers, errorWhileLoadingPayers } =
+    useAllPayersQuery();
+
+  const { budgets, loadingBudgets, errorWhileLoadingBudgets } =
+    useAllBudgetsQuery();
+
   const {
-    data: payers,
-    loading: loadingPayers,
-    error: errorWhileLoadingPayers,
-  } = useQuery(AllPayersQuery);
-
-  const { data: budgets, loading: loadingBudgets } = useQuery(AllBudgetsQuery);
-
-  const { data: paymentMethods, loading: loadingPaymentMethods } = useQuery(
-    AllPaymentMethodsQuery
-  );
+    paymentMethods,
+    loadingPaymentMethods,
+    errorWhileLoadingPaymentMethods,
+  } = useAllPaymentMethodsQuery();
 
   const { createExpend, loadingCreate, errorWhileCreating } =
     useCreateExpendMutation();
@@ -107,6 +73,10 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     loadingBudgets ||
     loadingPaymentMethods;
 
+  /**
+   * 支出レコードを新規追加する
+   * @param variables - 新規追加するレコードの値
+   */
   const addExpend = async (variables: {
     date: string;
     price: number;

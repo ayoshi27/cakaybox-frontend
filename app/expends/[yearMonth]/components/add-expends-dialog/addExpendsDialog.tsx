@@ -32,10 +32,10 @@ export default function AddExpendsDialog(props: {
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState(Number(categories[0].id));
-  const [payerId, setPayerId] = useState(Number(payers.payers[0].id));
-  const [budgetId, setBudgetId] = useState(Number(budgets.budgets[0].id));
+  const [payerId, setPayerId] = useState(Number(payers[0].id));
+  const [budgetId, setBudgetId] = useState(Number(budgets[0].id));
   const [paymentMethodId, setPaymentMethodId] = useState(
-    Number(paymentMethods.paymentMethods[0].id)
+    Number(paymentMethods[0].id)
   );
   const [isProcessed, setIsProcessed] = useState(false);
 
@@ -60,9 +60,9 @@ export default function AddExpendsDialog(props: {
     setPrice("0");
     setDescription("");
     setCategoryId(Number(categories[0].id));
-    setPayerId(Number(payers.payers[0].id));
-    setBudgetId(Number(budgets.budgets[0].id));
-    setPaymentMethodId(Number(paymentMethods.paymentMethods[0].id));
+    setPayerId(Number(payers[0].id));
+    setBudgetId(Number(budgets[0].id));
+    setPaymentMethodId(Number(paymentMethods[0].id));
     setIsProcessed(false);
   }
 
@@ -111,7 +111,7 @@ export default function AddExpendsDialog(props: {
       <div className={styles.formItem}>
         支払者:
         <select onChange={(e) => setPayerId(Number(e.currentTarget.value))}>
-          {payers.payers.map((payer: any) => (
+          {payers.map((payer: any) => (
             <option key={payer.id} value={payer.id}>
               {payer.name}
             </option>
@@ -124,7 +124,7 @@ export default function AddExpendsDialog(props: {
         <select
           onChange={(e) => setPaymentMethodId(Number(e.currentTarget.value))}
         >
-          {paymentMethods.paymentMethods.map((paymentMethod: any) => (
+          {paymentMethods.map((paymentMethod: any) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
               {paymentMethod.name}
             </option>
@@ -135,7 +135,7 @@ export default function AddExpendsDialog(props: {
       <div className={styles.formItem}>
         支出元:
         <select onChange={(e) => setBudgetId(Number(e.currentTarget.value))}>
-          {budgets.budgets.map((budget: any) => (
+          {budgets.map((budget: any) => (
             <option key={budget.id} value={budget.id}>
               {budget.name}
             </option>
