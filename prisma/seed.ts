@@ -103,10 +103,484 @@ async function main() {
   //     },
   //   },
   // })
+  // await prisma.customCountingItemTerm.create({
+  //   data: {
+  //     sign: "PLUS",
+  //     coefficient: 1,
+  //     processed: [true, false],
+  //     categories: {
+  //       create: [
+  //         {
+  //           category: {
+  //             connect: {
+  //               id: 3,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     paymentMethods: {
+  //       create: [
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 1,
+  //             },
+  //           },
+  //         },
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 2,
+  //             },
+  //           },
+  //         },
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 3,
+  //             },
+  //           },
+  //         },
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 4,
+  //             },
+  //           },
+  //         },
+  //         {
+  //           paymentMethod: {
+  //             connect: {
+  //               id: 5,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     budgets: {
+  //       create: [
+  //         {
+  //           budget: {
+  //             connect: {
+  //               id: 2,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     payers: {
+  //       create: [
+  //         {
+  //           payer: {
+  //             connect: {
+  //               id: 1,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
+  // await prisma.customCountingItem.create({
+  //   data: {
+  //     name: "明弘個人お小遣い",
+  //     code: "akihiro-personal",
+  //     terms: {
+  //       create: [
+  //         {
+  //           sign: "PLUS",
+  //           coefficient: 1,
+  //           processed: [true, false],
+  //           categories: {
+  //             create: [
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           paymentMethods: {
+  //             create: [
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 4,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 5,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           budgets: {
+  //             create: [
+  //               {
+  //                 budget: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           payers: {
+  //             create: [
+  //               {
+  //                 payer: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
+  // await prisma.customCountingItem.create({
+  //   data: {
+  //     name: "明弘お小遣い合計",
+  //     code: "akihiro-total",
+  //     terms: {
+  //       create: [
+  //         {
+  //           sign: "PLUS",
+  //           coefficient: 1,
+  //           processed: [true, false],
+  //           categories: {
+  //             create: [
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           paymentMethods: {
+  //             create: [
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 4,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 5,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           budgets: {
+  //             create: [
+  //               {
+  //                 budget: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           payers: {
+  //             create: [
+  //               {
+  //                 payer: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         },
+  //         {
+  //           sign: "PLUS",
+  //           coefficient: 0.5,
+  //           processed: [true, false],
+  //           categories: {
+  //             create: [
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           paymentMethods: {
+  //             create: [
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 4,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 5,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           budgets: {
+  //             create: [
+  //               {
+  //                 budget: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           payers: {
+  //             create: [
+  //               {
+  //                 payer: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 payer: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
+  // await prisma.customCountingItem.create({
+  //   data: {
+  //     name: "月次精算用（李沙）",
+  //     code: "monthly-risa",
+  //     terms: {
+  //       create: [
+  //         {
+  //           sign: "PLUS",
+  //           coefficient: 1,
+  //           processed: [true, false],
+  //           categories: {
+  //             create: [
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 4,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 5,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 6,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 7,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 8,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 category: {
+  //                   connect: {
+  //                     id: 9,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           paymentMethods: {
+  //             create: [
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 3,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 4,
+  //                   },
+  //                 },
+  //               },
+  //               {
+  //                 paymentMethod: {
+  //                   connect: {
+  //                     id: 5,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           budgets: {
+  //             create: [
+  //               {
+  //                 budget: {
+  //                   connect: {
+  //                     id: 1,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //           payers: {
+  //             create: [
+  //               {
+  //                 payer: {
+  //                   connect: {
+  //                     id: 2,
+  //                   },
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
+
   await prisma.countingItem.create({
     data: {
-      name: '共同支出（明弘支払）',
-      code: 'shared-akihiro',
+      name: '共同支出（李沙支払）',
+      code: 'shared-risa',
       processed: [true, false],
       paymentMethods: {
         create: [
@@ -163,7 +637,7 @@ async function main() {
           {
             payer: {
               connect: {
-                id: 1,
+                id: 2,
               },
             }
           },
