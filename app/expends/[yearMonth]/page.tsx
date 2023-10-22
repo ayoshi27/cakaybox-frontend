@@ -2,7 +2,6 @@
 
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { gql, useMutation } from "@apollo/client";
 import styles from "./expends.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
@@ -13,6 +12,7 @@ import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery"
 import { useAllPayersQuery } from "@/app/shared/hooks/useAllPayersQuery";
 import { useAllBudgetsQuery } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
+import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
 
 // const UpdateExpendMutation = gql`
 //   mutation updateExpend($id: Int!, $description: String!) {
@@ -22,14 +22,6 @@ import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMetho
 //     }
 //   }
 // `;
-
-const DeleteExpendMutation = gql`
-  mutation deleteExpend($id: Int!) {
-    deleteExpend(id: $id) {
-      id
-    }
-  }
-`;
 
 export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { yearMonth } = params;
@@ -62,10 +54,8 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     useCreateExpendMutation();
 
   // const [updateExpend, { loading, error }] = useMutation(UpdateExpendMutation);
-  const [
-    deleteExpend,
-    { loading: loadingDeletion, error: errorWhileDeletion },
-  ] = useMutation(DeleteExpendMutation);
+  const { deleteExpend, loadingDeletion, errorWhileDeletion } =
+    useDeleteExpendMutation();
 
   const selectItemLoading =
     loadingCategories ||
@@ -96,7 +86,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
    * 指定されたidの支出レコードを削除する
    * @param id - 支出レコードのid
    */
-  const clickDeleteExpend = async (id: number) => {
+  const clickDeleteExpend = async (id: string) => {
     const variables = {
       id: Number(id),
     };
