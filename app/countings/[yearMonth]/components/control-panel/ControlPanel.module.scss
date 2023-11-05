@@ -12,12 +12,20 @@
   display: flex;
   align-items: center;
   gap: 15px;
+
+  @media (max-width: 400px) {
+    gap: 4px;
+  }
 }
 
 .currentYearMonth {
   font-size: 22px;
   font-weight: bold;
   color: #666;
+
+  @media screen and (max-width: 400px) {
+    font-size: 16px;
+  }
 }
 
 .prevButton,
@@ -28,6 +36,17 @@
 
   &:hover {
     background: #1976d21a;
+  }
+
+  @media screen and (max-width: 400px) {
+    padding: 4px;
+  }
+}
+
+.prevButtonLabel,
+.nextButtonLabel {
+  @media screen and (max-width: 400px) {
+    display: none;
   }
 }
 
@@ -43,4 +62,8 @@
   }
 }
 
-
+.toCountingButtonLabel {
+  @media screen and (max-width: 400px) {
+    display: none;
+  }
+}

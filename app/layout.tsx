@@ -8,6 +8,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Cakaybox",
   description: "Cakaybox is 'kakei-bo app for managing your money expend.'",
+  robots: {
+    googleBot: {
+      index: false,
+    },
+  },
 };
 
 export default function RootLayout({

@@ -18,7 +18,7 @@ export default function ControlPanel(props: {
         onClick={() => props.moveToAdjacentMonth("prev")}
       >
         <ChevronLeftIcon />
-        前月
+        <span className={styles.prevButtonLabel}>前月</span>
       </button>
       <span className={styles.currentYearMonth}>
         {dayjs(props.yearMonth).format("YYYY年MM月")}の支出集計
@@ -27,14 +27,17 @@ export default function ControlPanel(props: {
         className={styles.nextButton}
         onClick={() => props.moveToAdjacentMonth("next")}
       >
-        次月
+        <span className={styles.nextButtonLabel}>翌月</span>
         <ChevronRightIcon />
       </button>
       <button
         className={styles.toCountingButton}
         onClick={navigateToExpnedsPage}
       >
-        {dayjs(props.yearMonth).format("YYYY年MM月")}の支出一覧
+        <span className={styles.toCountingButtonLabel}>
+          {dayjs(props.yearMonth).format("YYYY年MM月")}の
+        </span>
+        支出一覧
       </button>
     </div>
   );
