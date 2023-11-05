@@ -14,10 +14,10 @@ export const { handleRequest } = createYoga<{
   },
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export { handleRequest as GET, handleRequest as POST };
