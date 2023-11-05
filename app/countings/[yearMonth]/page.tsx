@@ -185,6 +185,31 @@ export default function Counting({
         navigateToExpnedsPage={navigateToExpnedsPage}
       />
       <div className={styles.contentsContainer}>
+
+        {/* カスタム集計項目 */}
+        <section className={styles.tableSection}>
+          <h2 className={styles.tableTitle}>カスタム集計項目</h2>
+          <div className={styles.tableWrapper}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>カスタム集計項目名</th>
+                  <th>値</th>
+                </tr>
+              </thead>
+              <tbody>
+                {customCountingItemsTableRecords &&
+                  customCountingItemsTableRecords.map((record: any) => (
+                    <tr key={record.id}>
+                      <td>{record.name}</td>
+                      <td>{record.sum}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
         {/* カテゴリー別集計項目 */}
         <section className={styles.tableSection}>
           <h2 className={styles.tableTitle}>カテゴリー別集計項目</h2>
@@ -208,30 +233,6 @@ export default function Counting({
                         if (key === "id") return null;
                         return <td key={index}>{record[key]}</td>;
                       })}
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* カスタム集計項目 */}
-        <section className={styles.tableSection}>
-          <h2 className={styles.tableTitle}>カスタム集計項目</h2>
-          <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>カスタム集計項目名</th>
-                  <th>値</th>
-                </tr>
-              </thead>
-              <tbody>
-                {customCountingItemsTableRecords &&
-                  customCountingItemsTableRecords.map((record: any) => (
-                    <tr key={record.id}>
-                      <td>{record.name}</td>
-                      <td>{record.sum}</td>
                     </tr>
                   ))}
               </tbody>
