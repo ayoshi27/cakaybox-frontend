@@ -53,100 +53,100 @@ async function main() {
   //     { name: "李沙", code: "risa" },
   //   ],
   // });
-  await prisma.expend.createMany({
-    data: [
-      {
-        date: '2023-11-02',
-        price: 1000,
-        description: "test",
-        categoryId: 2,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-03',
-        price: 1000,
-        description: "test",
-        categoryId: 3,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-04',
-        price: 1000,
-        description: "test",
-        categoryId: 4,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-05',
-        price: 1000,
-        description: "test",
-        categoryId: 5,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-06',
-        price: 1000,
-        description: "test",
-        categoryId: 6,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-07',
-        price: 1000,
-        description: "test",
-        categoryId: 7,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-08',
-        price: 1000,
-        description: "test",
-        categoryId: 8,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-09',
-        price: 1000,
-        description: "test",
-        categoryId: 9,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-10',
-        price: 1000,
-        description: "test",
-        categoryId: 10,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-      {
-        date: '2023-11-11',
-        price: 1000,
-        description: "test",
-        categoryId: 11,
-        budgetId: 1,
-        paymentMethodId: 1,
-        payerId: 1,
-      },
-    ]
-  })
+  // await prisma.expend.createMany({
+  //   data: [
+  //     {
+  //       date: '2023-11-02',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 2,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-03',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 3,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-04',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 4,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-05',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 5,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-06',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 6,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-07',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 7,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-08',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 8,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-09',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 9,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-10',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 10,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //     {
+  //       date: '2023-11-11',
+  //       price: 1000,
+  //       description: "test",
+  //       categoryId: 11,
+  //       budgetId: 1,
+  //       paymentMethodId: 1,
+  //       payerId: 1,
+  //     },
+  //   ]
+  // })
 
   // await prisma.countingItem.create({
   //   data: {
@@ -783,6 +783,220 @@ async function main() {
   //     },
   //   },
   // });
+
+  await prisma.customCountingItem.create({
+    data: {
+      name: "李沙→明弘",
+      code: "risa-to-akihiro",
+      terms: {
+        create: [
+          { // NOTE: 明弘が払った共同支出の1/2
+            sign: "PLUS",
+            coefficient: 0.5,
+            processed: [true, false],
+            categories: {
+              create: [
+                {
+                  category: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+              ],
+            },
+            paymentMethods: {
+              create: [
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 2,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 5,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 6,
+                    },
+                  },
+                },
+              ],
+            },
+            budgets: {
+              create: [
+                {
+                  budget: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+              ],
+            },
+            payers: {
+              create: [
+                {
+                  payer: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          { // NOTE: 李沙が払った共同支出の1/2
+            sign: "MINUS",
+            coefficient: 0.5,
+            processed: [true, false],
+            categories: {
+              create: [
+                {
+                  category: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+              ],
+            },
+            paymentMethods: {
+              create: [
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 4,
+                    },
+                  },
+                },
+              ],
+            },
+            budgets: {
+              create: [
+                {
+                  budget: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+              ],
+            },
+            payers: {
+              create: [
+                {
+                  payer: {
+                    connect: {
+                      id: 2,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          { // NOTE: 明弘が払った李沙の個人支出（服一緒に買う時とか）
+            sign: "PLUS",
+            coefficient: 1,
+            processed: [false],
+            categories: {
+              create: [
+                {
+                  category: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+              ],
+            },
+            paymentMethods: {
+              create: [
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 2,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 5,
+                    },
+                  },
+                },
+                {
+                  paymentMethod: {
+                    connect: {
+                      id: 6,
+                    },
+                  },
+                },
+              ],
+            },
+            budgets: {
+              create: [
+                {
+                  budget: {
+                    connect: {
+                      id: 3,
+                    },
+                  },
+                },
+              ],
+            },
+            payers: {
+              create: [
+                {
+                  payer: {
+                    connect: {
+                      id: 1,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
 
   // await prisma.countingItem.create({
   //   data: {
