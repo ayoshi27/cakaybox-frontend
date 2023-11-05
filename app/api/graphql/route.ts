@@ -2,7 +2,7 @@ import { createYoga } from "graphql-yoga";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { schema } from "../../../graphql/schema";
 
-export const { handleRequest } = createYoga<{
+const { handleRequest } = createYoga<{
   req: NextApiRequest;
   res: NextApiResponse;
 }>({
@@ -14,10 +14,10 @@ export const { handleRequest } = createYoga<{
   },
 });
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
+const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export { handleRequest as GET, handleRequest as POST };

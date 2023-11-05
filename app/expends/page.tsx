@@ -2,9 +2,13 @@
 
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Expends() {
   const roeuter = useRouter();
   const currentYearMonth = dayjs().format("YYYY-MM");
-  roeuter.push(`/expends/${currentYearMonth}`);
+
+  useEffect(() => {
+    roeuter.push(`/expends/${currentYearMonth}`);
+  });
 }

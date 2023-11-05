@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { builder } from "../builder";
+import prisma from '../../lib/prisma'
 
 builder.prismaObject("Expend", {
   fields: (t) => ({
