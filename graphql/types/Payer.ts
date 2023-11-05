@@ -8,6 +8,7 @@ builder.prismaObject('Payer', {
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
     name: t.exposeString('name'),
     Expend: t.relation('Expend'),
+    PaymentMethod: t.relation('PaymentMethod'),
   })
 })
 

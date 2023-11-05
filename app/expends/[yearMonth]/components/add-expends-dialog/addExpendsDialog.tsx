@@ -22,7 +22,6 @@ export default function AddExpendsDialog(props: {
   const {
     dialog: Dialog,
     categories,
-    payers,
     budgets,
     paymentMethods,
     addExpend,
@@ -32,7 +31,6 @@ export default function AddExpendsDialog(props: {
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState(Number(categories[0].id));
-  const [payerId, setPayerId] = useState(Number(payers[0].id));
   const [budgetId, setBudgetId] = useState(Number(budgets[0].id));
   const [paymentMethodId, setPaymentMethodId] = useState(
     Number(paymentMethods[0].id)
@@ -46,12 +44,18 @@ export default function AddExpendsDialog(props: {
       price: Number(price),
       description,
       categoryId,
-      payerId,
+      payerId: findPayerIdForPaymentMethodId(paymentMethodId),
       budgetId,
       paymentMethodId,
       processed: isProcessed,
     });
     resetFormValue();
+  }
+
+  // NOTE: stringかnumber型で引数を受け取れるようにしてhelper関数として切り出したい
+  function findPayerIdForPaymentMethodId(paymentMethodId: number): number {
+    return paymentMethods.find((method: any) => method.id === String(paymentMethodId))
+      .payerId;
   }
 
   /** フォームの値をリセットする */
@@ -60,7 +64,6 @@ export default function AddExpendsDialog(props: {
     setPrice("0");
     setDescription("");
     setCategoryId(Number(categories[0].id));
-    setPayerId(Number(payers[0].id));
     setBudgetId(Number(budgets[0].id));
     setPaymentMethodId(Number(paymentMethods[0].id));
     setIsProcessed(false);
@@ -103,17 +106,6 @@ export default function AddExpendsDialog(props: {
           {categories.map((category: any) => (
             <option key={category.id} value={category.id}>
               {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className={styles.formItem}>
-        支払者:
-        <select onChange={(e) => setPayerId(Number(e.currentTarget.value))}>
-          {payers.map((payer: any) => (
-            <option key={payer.id} value={payer.id}>
-              {payer.name}
             </option>
           ))}
         </select>

@@ -5,6 +5,7 @@ const AllPaymentMethodsQuery = gql`
     paymentMethods {
       id
       name
+      payerId
     }
   }
 `;

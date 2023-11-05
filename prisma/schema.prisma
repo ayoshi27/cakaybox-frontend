@@ -75,6 +75,7 @@ model Payer {
   Expend                        Expend[]
   PayerCountingItem             PayerOnCountingItem[]
   PayerOnCustomCountingItemTerm PayerOnCustomCountingItemTerm[]
+  PaymentMethod                 PaymentMethod[]
 }
 
 model PayerOnCountingItem {
@@ -145,6 +146,8 @@ model PaymentMethod {
   Expend                              Expend[]
   PaymentMethodCountingItem           PaymentMethodOnCountingItem[]
   PaymentMethodCustomCountingItemTerm PaymentMethodOnCustomCountingItemTerm[]
+  Payer                               Payer                                   @relation(fields: [payerId], references: [id])
+  payerId                             Int
 }
 
 model PaymentMethodOnCountingItem {
