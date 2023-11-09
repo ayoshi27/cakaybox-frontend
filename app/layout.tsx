@@ -9,9 +9,8 @@ export const metadata = {
   title: "Cakaybox",
   description: "Cakaybox is 'kakei-bo app for managing your money expend.'",
   robots: {
-    googleBot: {
-      index: false,
-    },
+    index: false,
+    follow: false,
   },
 };
 
