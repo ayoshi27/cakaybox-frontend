@@ -1,29 +1,32 @@
-import { gql, useQuery } from "@apollo/client";
+import {  useQuery } from "@apollo/client";
+import { graphql } from '@/src/gql/'
 
-const AllCountingItemsQuery = gql`
-  query {
-    countingItem {
-      id
-      code
-      name
-      payers {
-        payer {
-          id
+const allCountingItemsQueryDocument = graphql(/* GraphQL */ 
+  `
+    query AllCountingItemsQuery {
+      countingItem {
+        id
+        code
+        name
+        payers {
+          payer {
+            id
+          }
         }
-      }
-      budgets {
-        budget {
-          id
+        budgets {
+          budget {
+            id
+          }
         }
-      }
-      paymentMethods {
-        paymentMethod {
-          id
+        paymentMethods {
+          paymentMethod {
+            id
+          }
         }
       }
     }
-  }
-`;
+  `,
+);
 
 /** 登録されているすべての集計項目を取得する */
 export function useAllCountingItemsQuery() {
@@ -31,7 +34,7 @@ export function useAllCountingItemsQuery() {
     data,
     loading: loadingCountingItems,
     error: errorWhileLoadingCountingItems,
-  } = useQuery(AllCountingItemsQuery);
+  } = useQuery(allCountingItemsQueryDocument);
 
   return {
     countingItems: data?.countingItem,

@@ -25,12 +25,14 @@ export default function Counting({
     yearMonth,
   });
 
+  type Expends = typeof expends
+
   /**
    * 引数で渡される支出の合計金額を算出する
    * @param expends - 支出一覧
    */
-  const getSumPrice = (expends: any) => {
-    return expends?.reduce((acc: number, expend: any) => acc + expend.price, 0);
+  const getSumPrice = (expends: Expends) => {
+    return expends?.reduce((acc: number, expend: any) => acc + expend.price, 0) || 0;
   };
 
   /**
@@ -220,13 +222,13 @@ export default function Counting({
                   <th>カテゴリー</th>
                   <th>合計</th>
                   <th>残り</th>
-                  {countingItems.map((countingItem: any) => (
+                  {countingItems?.map((countingItem: any) => (
                     <th key={countingItem.id}>{countingItem.name}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {tableRecords.length &&
+                {tableRecords?.length &&
                   tableRecords.map((record: any) => (
                     <tr key={record.id}>
                       {Object.keys(record).map((key, index) => {
