@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import ControlPanel from "./components/control-panel/ControlPanel";
+import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import styles from "./countings.module.scss";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
 import { useAllCountingItemsQuery } from "./hooks/useAllCountingItemsQuery";
@@ -25,14 +26,16 @@ export default function Counting({
     yearMonth,
   });
 
-  type Expends = typeof expends
+  type Expends = typeof expends;
 
   /**
    * 引数で渡される支出の合計金額を算出する
    * @param expends - 支出一覧
    */
   const getSumPrice = (expends: Expends) => {
-    return expends?.reduce((acc: number, expend: any) => acc + expend.price, 0) || 0;
+    return (
+      expends?.reduce((acc: number, expend: any) => acc + expend.price, 0) || 0
+    );
   };
 
   /**
@@ -171,13 +174,11 @@ export default function Counting({
     router.push(`/expends/${yearMonth}`);
   }
 
-  if (
+  const loadingContents =
     loadingCategories ||
     loadingCountingItems ||
     loadingCustomCountingItems ||
-    loadingExpends
-  )
-    return <p>Now Loading...</p>;
+    loadingExpends;
 
   return (
     <>
@@ -187,58 +188,65 @@ export default function Counting({
         navigateToExpnedsPage={navigateToExpnedsPage}
       />
       <div className={styles.contentsContainer}>
-
         {/* カスタム集計項目 */}
         <section className={styles.tableSection}>
           <h2 className={styles.tableTitle}>カスタム集計項目</h2>
           <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>カスタム集計項目名</th>
-                  <th>値</th>
-                </tr>
-              </thead>
-              <tbody>
-                {customCountingItemsTableRecords &&
-                  customCountingItemsTableRecords.map((record: any) => (
-                    <tr key={record.id}>
-                      <td>{record.name}</td>
-                      <td>{record.sum}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            {loadingContents ? (
+              <SkeletonTable />
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>カスタム集計項目名</th>
+                    <th>値</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customCountingItemsTableRecords &&
+                    customCountingItemsTableRecords.map((record: any) => (
+                      <tr key={record.id}>
+                        <td>{record.name}</td>
+                        <td>{record.sum}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
-        
+
         {/* カテゴリー別集計項目 */}
         <section className={styles.tableSection}>
           <h2 className={styles.tableTitle}>カテゴリー別集計項目</h2>
           <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>カテゴリー</th>
-                  <th>合計</th>
-                  <th>残り</th>
-                  {countingItems?.map((countingItem: any) => (
-                    <th key={countingItem.id}>{countingItem.name}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {tableRecords?.length &&
-                  tableRecords.map((record: any) => (
-                    <tr key={record.id}>
-                      {Object.keys(record).map((key, index) => {
-                        if (key === "id") return null;
-                        return <td key={index}>{record[key]}</td>;
-                      })}
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            {loadingContents ? (
+              <SkeletonTable />
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>カテゴリー</th>
+                    <th>合計</th>
+                    <th>残り</th>
+                    {countingItems?.map((countingItem: any) => (
+                      <th key={countingItem.id}>{countingItem.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableRecords?.length &&
+                    tableRecords.map((record: any) => (
+                      <tr key={record.id}>
+                        {Object.keys(record).map((key, index) => {
+                          if (key === "id") return null;
+                          return <td key={index}>{record[key]}</td>;
+                        })}
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
       </div>

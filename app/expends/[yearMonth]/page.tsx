@@ -6,6 +6,7 @@ import styles from "./expends.module.scss";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
+import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
@@ -129,55 +130,59 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
         <button className={styles.addExpendButton} onClick={openDialog}>
           支出追加
         </button>
-        <div className={styles.tableWrapper}>
-          <table className={styles.expendsTable}>
-            <thead>
-              <tr>
-                <th>日付</th>
-                <th>料金</th>
-                <th>内容</th>
-                <th>カテゴリー</th>
-                <th>支払者</th>
-                <th>支払方法</th>
-                <th>支払元</th>
-                <th>精算済</th>
-                <th>編集</th>
-                <th>削除</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expends &&
-                expends.map((expend: any) => (
-                  <tr key={expend.id}>
-                    <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
-                    <td>{expend.price}</td>
-                    <td>{expend.description}</td>
-                    <td>{expend.category.name}</td>
-                    <td>{expend.payer.name}</td>
-                    <td>{expend.paymentMethod.name}</td>
-                    <td>{expend.budget.name}</td>
-                    <td>{expend.processed ? "済" : "未"}</td>
-                    <td>
-                      <button
-                        className={styles.tableButton}
-                        onClick={() => console.log(expend.id)}
-                      >
-                        編集
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className={styles.tableButton}
-                        onClick={() => clickDeleteExpend(expend.id)}
-                      >
-                        削除
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+        {loadingExpends ? (
+          <SkeletonTable />
+        ) : (
+          <div className={styles.tableWrapper}>
+            <table className={styles.expendsTable}>
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>料金</th>
+                  <th>内容</th>
+                  <th>カテゴリー</th>
+                  <th>支払者</th>
+                  <th>支払方法</th>
+                  <th>支払元</th>
+                  <th>精算済</th>
+                  <th>編集</th>
+                  <th>削除</th>
+                </tr>
+              </thead>
+              <tbody>
+                {expends &&
+                  expends.map((expend: any) => (
+                    <tr key={expend.id}>
+                      <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
+                      <td>{expend.price}</td>
+                      <td>{expend.description}</td>
+                      <td>{expend.category.name}</td>
+                      <td>{expend.payer.name}</td>
+                      <td>{expend.paymentMethod.name}</td>
+                      <td>{expend.budget.name}</td>
+                      <td>{expend.processed ? "済" : "未"}</td>
+                      <td>
+                        <button
+                          className={styles.tableButton}
+                          onClick={() => console.log(expend.id)}
+                        >
+                          編集
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className={styles.tableButton}
+                          onClick={() => clickDeleteExpend(expend.id)}
+                        >
+                          削除
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {!selectItemLoading && (
