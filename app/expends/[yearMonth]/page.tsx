@@ -79,7 +79,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     processed: boolean;
   }) => {
     await createExpend({ variables });
-    await refetch();
+    refetch();
     closeDialog();
   };
 
@@ -188,6 +188,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
       {!selectItemLoading && (
         <AddExpendsDialog
           dialog={Dialog}
+          isLoading={loadingCreate}
           categories={categories}
           payers={payers}
           budgets={budgets}

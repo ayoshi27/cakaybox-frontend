@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function AddExpendsDialog(props: {
   dialog: any;
+  isLoading: boolean;
   categories: any;
   payers: any;
   budgets: any;
@@ -21,6 +22,7 @@ export default function AddExpendsDialog(props: {
 }) {
   const {
     dialog: Dialog,
+    isLoading,
     categories,
     budgets,
     paymentMethods,
@@ -70,7 +72,7 @@ export default function AddExpendsDialog(props: {
   }
 
   return (
-    <Dialog>
+    <Dialog isLoading={isLoading}>
       <h2 className={styles.dialogTitle}>支出を追加</h2>
 
       <div className={styles.formItem}>

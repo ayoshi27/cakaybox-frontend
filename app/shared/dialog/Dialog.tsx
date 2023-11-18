@@ -5,12 +5,14 @@ import styles from "./Dialog.module.scss";
 
 type Props = {
   isOpen: boolean;
+  isLoading: boolean;
   children: React.ReactNode | React.ReactNodeArray;
   onClose: VoidFunction;
 };
 
 export const Dialog: React.FC<Props> = ({
   isOpen,
+  isLoading,
   children,
   onClose,
 }): React.ReactElement | null => {
@@ -38,13 +40,6 @@ export const Dialog: React.FC<Props> = ({
     onClose();
   }, [onClose]);
 
-  const handleClickContent = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>): void => {
-      event.stopPropagation();
-    },
-    []
-  );
-
   return (
     <RemoveScroll removeScrollBar enabled={isOpen}>
       <dialog
@@ -52,7 +47,16 @@ export const Dialog: React.FC<Props> = ({
         ref={dialogRef}
         onClick={handleClickDialog}
       >
-        <div className={styles["content"]} onClick={handleClickContent}>
+        {isLoading && (
+          <div
+            className={styles["loadingOverlay"]}
+            onClick={(e) => e.stopPropagation()}
+          >
+            loading...
+            {/* TODO: implement progress circle */}
+          </div>
+        )}
+        <div className={styles["content"]} onClick={(e) => e.stopPropagation()}>
           {children}
         </div>
       </dialog>
