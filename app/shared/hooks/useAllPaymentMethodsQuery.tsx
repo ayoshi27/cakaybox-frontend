@@ -1,15 +1,14 @@
 import { useQuery, gql } from "@apollo/client";
-import { graphql } from '@/src/gql/'
 
-const AllPaymentMethodsQuery = graphql(`
-  query AllPaymentMethodsQuery {
+const AllPaymentMethodsQuery = gql`
+  query {
     paymentMethods {
       id
       name
       payerId
     }
   }
-`);
+`;
 
 /** 登録されているすべての支払方法を取得する */
 export function useAllPaymentMethodsQuery() {

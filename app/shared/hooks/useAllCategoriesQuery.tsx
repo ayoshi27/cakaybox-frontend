@@ -1,15 +1,14 @@
-import { useQuery } from "@apollo/client";
-import { graphql } from "@/src/gql/";
+import { useQuery, gql } from "@apollo/client";
 
-const AllCategoriesQuery = graphql(`
-  query AllCategoriesQuery {
+const AllCategoriesQuery = gql`
+  query {
     categories {
       id
       name
       limit
     }
   }
-`);
+`;
 
 /** 登録されているすべてのカテゴリーを取得する */
 export function useAllCategoriesQuery() {

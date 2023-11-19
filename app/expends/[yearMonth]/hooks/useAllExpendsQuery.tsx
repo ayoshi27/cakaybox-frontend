@@ -1,8 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
-import { graphql } from '@/src/gql/'
 
-const AllExpendsQuery = graphql(`
-  query AllExpendsQuery ($yearMonth: String) {
+const AllExpendsQuery = gql`
+  query ($yearMonth: String) {
     expends(yearMonth: $yearMonth) {
       id
       date
@@ -26,7 +25,7 @@ const AllExpendsQuery = graphql(`
       processed
     }
   }
-`);
+`;
 
 /**
  * 指定した年月の支出を全件取得する

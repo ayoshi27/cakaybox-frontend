@@ -1,8 +1,7 @@
-import { useQuery } from "@apollo/client";
-import { graphql } from '@/src/gql/'
+import { gql, useQuery } from "@apollo/client";
 
-const AllCustomCountingItemsQuery = graphql(`
-  query AllCustomCountingItemsQuery {
+const AllCustomCountingItemsQuery = gql`
+  query {
     customCountingItem {
       id
       name
@@ -34,7 +33,7 @@ const AllCustomCountingItemsQuery = graphql(`
       }
     }
   }
-`);
+`;
 
 /** 登録されているすべてのカスタム集計項目を取得する */
 export function useAllCustomCountingItemsQuery() {

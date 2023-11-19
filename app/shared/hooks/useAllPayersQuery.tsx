@@ -1,14 +1,13 @@
 import { useQuery, gql } from "@apollo/client";
-import { graphql } from '@/src/gql/'
 
-const AllPayersQuery = graphql(`
-  query AllPayersQuery {
+const AllPayersQuery = gql`
+  query {
     payers {
       id
       name
     }
   }
-`);
+`;
 
 /** 登録されているすべての支払者を取得する */
 export function useAllPayersQuery() {

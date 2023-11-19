@@ -1,8 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
-import { graphql } from '@/src/gql/'
 
-const AllExtendsForCountingQuery = graphql(`
-  query AllExtendsForCountingQuery ($yearMonth: String) {
+const AllExtendsForCountingQuery = gql`
+  query ($yearMonth: String) {
     expends(yearMonth: $yearMonth) {
       price
       description
@@ -25,7 +24,7 @@ const AllExtendsForCountingQuery = graphql(`
       processed
     }
   }
-`);
+`;
 
 /**
  * 指定した年月の支出（集計用）を全件取得する
