@@ -26,13 +26,11 @@ export default function Counting({
     yearMonth,
   });
 
-  type Expends = typeof expends;
-
   /**
    * 引数で渡される支出の合計金額を算出する
    * @param expends - 支出一覧
    */
-  const getSumPrice = (expends: Expends) => {
+  const getSumPrice = (expends: any) => {
     return (
       expends?.reduce((acc: number, expend: any) => acc + expend.price, 0) || 0
     );
