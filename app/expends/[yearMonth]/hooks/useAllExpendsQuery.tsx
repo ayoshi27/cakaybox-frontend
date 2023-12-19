@@ -9,18 +9,22 @@ const AllExpendsQuery = gql`
       description
       category {
         name
+        id
       }
       budget {
         name
+        id
       }
       payer {
         name
       }
       paymentMethod {
         name
+        id
       }
       budget {
         name
+        id
       }
       processed
     }

@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import styles from "./expends.module.scss";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
+import FilterDialog from "./components/filter-dialog/FilterDialog";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
@@ -27,7 +31,28 @@ import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
 export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { yearMonth } = params;
   const router = useRouter();
-  const { Dialog, open: openDialog, close: closeDialog } = useDialog();
+  const {
+    Dialog,
+    open: openAddExpendDialog,
+    close: closeAddExpendDialog,
+  } = useDialog();
+  const {
+    Dialog: filterDialog,
+    open: openFilterDialog,
+    close: closeFilterDialog,
+  } = useDialog();
+
+  const [filterConditions, setFilterConditions] = useState<{
+    categoryIdList: number[];
+    budgetIdList: number[];
+    paymentMethodIdList: number[];
+    isProcessedList: boolean[];
+  }>({
+    categoryIdList: [],
+    budgetIdList: [],
+    paymentMethodIdList: [],
+    isProcessedList: [true, false],
+  });
 
   const {
     expends,
@@ -35,6 +60,27 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     error: errorWhileloadingExpends,
     refetch,
   } = useAllExpendsQuery({ yearMonth: yearMonth });
+
+  const filteredExpends = expends?.filter((expend: any) => {
+    const isCategoryMatched =
+      filterConditions.categoryIdList.length === 0 ||
+      filterConditions.categoryIdList.includes(expend.category.id);
+    const isBudgetMatched =
+      filterConditions.budgetIdList.length === 0 ||
+      filterConditions.budgetIdList.includes(expend.budget.id);
+    const isPaymentMethodMatched =
+      filterConditions.paymentMethodIdList.length === 0 ||
+      filterConditions.paymentMethodIdList.includes(expend.paymentMethod.id);
+    const isProcessedMatched =
+      filterConditions.isProcessedList.length === 0 ||
+      filterConditions.isProcessedList.includes(expend.processed);
+    return (
+      isCategoryMatched &&
+      isBudgetMatched &&
+      isPaymentMethodMatched &&
+      isProcessedMatched
+    );
+  });
 
   const { categories, loadingCategories, errorWhileLoadingCategories } =
     useAllCategoriesQuery();
@@ -65,6 +111,27 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     loadingPaymentMethods;
 
   /**
+   * 引数で渡される条件でフィルターを適用する
+   * @param payload - フィルター条件
+   */
+  function applyFilterConditions(payload: any): void {
+    setFilterConditions(payload);
+    closeFilterDialog();
+  }
+
+  /**
+   * フィルター条件をリセットする
+   */
+  function resetFilterConditions(): void {
+    setFilterConditions({
+      categoryIdList: [],
+      budgetIdList: [],
+      paymentMethodIdList: [],
+      isProcessedList: [true, false],
+    });
+  }
+
+  /**
    * 支出レコードを新規追加する
    * @param variables - 新規追加するレコードの値
    */
@@ -80,7 +147,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   }) => {
     await createExpend({ variables });
     refetch();
-    closeDialog();
+    closeAddExpendDialog();
   };
 
   /**
@@ -127,9 +194,26 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
         navigateToCountingPage={navigateToCountingPage}
       />
       <div className={styles.contentsContainer}>
-        <button className={styles.addExpendButton} onClick={openDialog}>
-          支出追加
-        </button>
+        <div className={styles.tableControlContainer}>
+          <button
+            className={styles.addExpendButton}
+            onClick={openAddExpendDialog}
+          >
+            支出追加
+          </button>
+          <div className={styles.filterButtonContainer}>
+            <button
+              className={styles.filterButton}
+              onClick={resetFilterConditions}
+            >
+              <FilterAltOffIcon color="primary" fontSize="small" />
+            </button>
+            <button className={styles.filterButton} onClick={openFilterDialog}>
+              <FilterAltIcon color="primary" fontSize="small" />
+              フィルター
+            </button>
+          </div>
+        </div>
         {loadingExpends ? (
           <SkeletonTable />
         ) : (
@@ -150,8 +234,8 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                 </tr>
               </thead>
               <tbody>
-                {expends &&
-                  expends.map((expend: any) => (
+                {filteredExpends &&
+                  filteredExpends.map((expend: any) => (
                     <tr key={expend.id}>
                       <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
                       <td>{expend.price}</td>
@@ -194,6 +278,17 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
           budgets={budgets}
           paymentMethods={paymentMethods}
           addExpend={addExpend}
+        />
+      )}
+      {!selectItemLoading && (
+        <FilterDialog
+          dialog={filterDialog}
+          isLoading={loadingCreate}
+          categories={categories}
+          payers={payers}
+          budgets={budgets}
+          paymentMethods={paymentMethods}
+          applyFilterConditions={applyFilterConditions}
         />
       )}
     </>

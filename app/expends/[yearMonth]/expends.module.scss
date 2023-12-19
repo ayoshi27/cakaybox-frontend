@@ -3,8 +3,9 @@
   justify-content: center;
   align-items: center;
   height: 40px;
-  width: 72px;
+  min-width: 72px;
   padding: 6px 8px;
+  white-space: nowrap;
   font-size: 14px;
 }
 
@@ -32,6 +33,15 @@
   }
 }
 
+.filterButton {
+  @include button();
+  background-color: #f9f9f9;
+
+  &:hover {
+    background: darken(#f9f9f9, 10);
+  }
+}
+
 .tableWrapper {
   width: 100%;
   height: calc(100dvh - 40px - (20px * 2) - 60px - (79px + 24px));
@@ -40,6 +50,16 @@
   @media screen and (max-width: 400px) {
     height: calc(100dvh - 40px - (15px * 2) - 60px - (56px + 16px));
   }
+}
+.tableControlContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filterButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .expendsTable {
   font-size: 14px;
