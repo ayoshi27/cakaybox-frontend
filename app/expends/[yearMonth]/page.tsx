@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dayjs from "dayjs";
+import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import styles from "./expends.module.scss";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -9,6 +10,7 @@ import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
+import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpendsDialog";
 import FilterDialog from "./components/filter-dialog/FilterDialog";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
@@ -18,15 +20,7 @@ import { useAllPayersQuery } from "@/app/shared/hooks/useAllPayersQuery";
 import { useAllBudgetsQuery } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
-
-// const UpdateExpendMutation = gql`
-//   mutation updateExpend($id: Int!, $description: String!) {
-//     updateExpend(id: $id, description: $description) {
-//       id
-//       description
-//     }
-//   }
-// `;
+import { useUpdateExpendMutation } from "./hooks/useUpdateExpendMutation";
 
 export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { yearMonth } = params;
@@ -37,10 +31,39 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     close: closeAddExpendDialog,
   } = useDialog();
   const {
+    Dialog: updateExpendDialog,
+    open: openUpdateExpendDialog,
+    close: closeUpdateExpendDialog,
+  } = useDialog();
+  const {
     Dialog: filterDialog,
     open: openFilterDialog,
     close: closeFilterDialog,
   } = useDialog();
+
+  const [updateExpendDialogId, setUpdateExpendDialogId] = useState(nanoid());
+  const [initialValueForUpdateDialog, setInitialValueForUpdateDialog] =
+    useState<{
+      id: number;
+      date: string;
+      price: number;
+      description: string;
+      categoryId: number;
+      payerId: number;
+      budgetId: number;
+      paymentMethodId: number;
+      processed: boolean;
+    }>({
+      id: 0,
+      date: "",
+      price: 0,
+      description: "",
+      categoryId: 0,
+      payerId: 0,
+      budgetId: 0,
+      paymentMethodId: 0,
+      processed: false,
+    });
 
   const [filterConditions, setFilterConditions] = useState<{
     categoryIdList: number[];
@@ -100,9 +123,11 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { createExpend, loadingCreate, errorWhileCreating } =
     useCreateExpendMutation();
 
-  // const [updateExpend, { loading, error }] = useMutation(UpdateExpendMutation);
   const { deleteExpend, loadingDeletion, errorWhileDeletion } =
     useDeleteExpendMutation();
+
+  const { updateExpend, loadingUpdate, errorWhileUpdating } =
+    useUpdateExpendMutation();
 
   const selectItemLoading =
     loadingCategories ||
@@ -151,6 +176,42 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   };
 
   /**
+   * 支出レコードを更新する
+   * @param variables - 更新するレコードの値
+   */
+  const onUpdateExpend = async (variables: {
+    date: string;
+    price: number;
+    description: string;
+    categoryId: number;
+    payerId: number;
+    budgetId: number;
+    paymentMethodId: number;
+    processed: boolean;
+  }) => {
+    await updateExpend({ variables });
+    refetch();
+    closeUpdateExpendDialog();
+  };
+
+  function onClickUpdateButton(expendsId: number): void {
+    setUpdateExpendDialogId(nanoid());
+    const targetExpend = expends.find((expend: any) => expend.id === expendsId);
+    setInitialValueForUpdateDialog({
+      id: expendsId,
+      date: targetExpend.date,
+      price: targetExpend.price,
+      description: targetExpend.description,
+      categoryId: targetExpend.category.id,
+      payerId: targetExpend.payer.id,
+      budgetId: targetExpend.budget.id,
+      paymentMethodId: targetExpend.paymentMethod.id,
+      processed: targetExpend.processed,
+    });
+    openUpdateExpendDialog();
+  }
+
+  /**
    * 指定されたidの支出レコードを削除する
    * @param id - 支出レコードのid
    */
@@ -184,7 +245,6 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     return <p>Oh no... {errorWhileloadingExpends.message}</p>;
   if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.message}</p>;
   if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.message}</p>;
-  // if (error) return <p>Oh no... {error.message}</p>;
 
   return (
     <>
@@ -248,7 +308,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                       <td>
                         <button
                           className={styles.tableButton}
-                          onClick={() => console.log(expend.id)}
+                          onClick={() => onClickUpdateButton(expend.id)}
                         >
                           編集
                         </button>
@@ -278,6 +338,19 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
           budgets={budgets}
           paymentMethods={paymentMethods}
           addExpend={addExpend}
+        />
+      )}
+      {!selectItemLoading && (
+        <UpdateExpendsDialog
+          key={updateExpendDialogId} // NOTE: 編集ボタンをクリックする度にダイアログを初期化する
+          dialog={updateExpendDialog}
+          isLoading={loadingUpdate}
+          categories={categories}
+          payers={payers}
+          budgets={budgets}
+          paymentMethods={paymentMethods}
+          initialValue={initialValueForUpdateDialog}
+          updateExpend={onUpdateExpend}
         />
       )}
       {!selectItemLoading && (
