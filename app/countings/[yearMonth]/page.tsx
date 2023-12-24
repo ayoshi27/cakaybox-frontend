@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import styles from "./countings.module.scss";
+import { formatPrice } from "@/app/utils/stringUtils";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
 import { useAllCountingItemsQuery } from "./hooks/useAllCountingItemsQuery";
 import { useAllCustomCountingItemsQuery } from "./hooks/useAllCustomCountingItemsQuery";
@@ -205,7 +206,7 @@ export default function Counting({
                     customCountingItemsTableRecords.map((record: any) => (
                       <tr key={record.id}>
                         <td>{record.name}</td>
-                        <td>{record.sum}</td>
+                        <td>{formatPrice(record.sum)}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -238,7 +239,9 @@ export default function Counting({
                       <tr key={record.id}>
                         {Object.keys(record).map((key, index) => {
                           if (key === "id") return null;
-                          return <td key={index}>{record[key]}</td>;
+                          return (
+                            <td key={index}>{formatPrice(record[key])}</td>
+                          );
                         })}
                       </tr>
                     ))}

@@ -13,6 +13,7 @@ import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpendsDialog";
 import FilterDialog from "./components/filter-dialog/FilterDialog";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
+import { formatPrice } from "@/app/utils/stringUtils";
 import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
@@ -298,7 +299,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                   filteredExpends.map((expend: any) => (
                     <tr key={expend.id}>
                       <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
-                      <td>{expend.price}</td>
+                      <td>{formatPrice(expend.price)}</td>
                       <td>{expend.description}</td>
                       <td>{expend.category.name}</td>
                       <td>{expend.payer.name}</td>
