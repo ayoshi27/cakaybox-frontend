@@ -1,48 +1,14 @@
-import { useQuery, gql } from "@apollo/client";
+import { client } from "@/lib/query";
 
-const AllExpendsQuery = gql`
-  query ($yearMonth: String) {
-    expends(yearMonth: $yearMonth) {
-      id
-      date
-      price
-      description
-      category {
-        name
-        id
-      }
-      budget {
-        name
-        id
-      }
-      payer {
-        name
-      }
-      paymentMethod {
-        name
-        id
-      }
-      budget {
-        name
-        id
-      }
-      processed
-    }
-  }
-`;
-
-/**
- * 指定した年月の支出を全件取得する
- * @param variables - yearMonth (e.g. 2021-01)
- */
 export function useAllExpendsQuery(variables: { yearMonth: string }) {
-  const { data, loading, error, refetch } = useQuery(AllExpendsQuery, {
-    variables,
-  });
+  const { data, isLoading, error, refetch } = client.expends.getList.useQuery(
+    ["expends"],
+    { query: { yearMonth: variables.yearMonth } }
+  );
 
   return {
-    expends: data?.expends,
-    loading,
+    data: data?.body,
+    isLoading,
     error,
     refetch,
   };

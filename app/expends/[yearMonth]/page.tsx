@@ -79,13 +79,14 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   });
 
   const {
-    expends,
-    loading: loadingExpends,
+    data: expends,
+    isLoading: isLoadingExpends,
     error: errorWhileloadingExpends,
     refetch,
   } = useAllExpendsQuery({ yearMonth: yearMonth });
 
-  const filteredExpends = expends?.filter((expend: any) => {
+  /**フィルターで指定した条件で絞り込まれた支出レコードリスト */
+  const filteredExpends = expends?.filter((expend) => {
     const isCategoryMatched =
       filterConditions.categoryIdList.length === 0 ||
       filterConditions.categoryIdList.includes(expend.category.id);
@@ -195,19 +196,35 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     closeUpdateExpendDialog();
   };
 
+  /**
+   * 指定されたidの支出レコードを更新するダイアログを表示する
+   * @param expendsId - 支出レコードのid
+   */
   function onClickUpdateButton(expendsId: number): void {
     setUpdateExpendDialogId(nanoid());
-    const targetExpend = expends.find((expend: any) => expend.id === expendsId);
+    const targetExpend = expends?.find((expend) => expend.id === expendsId);
+    if (!targetExpend) return;
+
+    const {
+      date,
+      price,
+      description,
+      category,
+      payer,
+      budget,
+      paymentMethod,
+      processed,
+    } = targetExpend;
     setInitialValueForUpdateDialog({
       id: expendsId,
-      date: targetExpend.date,
-      price: targetExpend.price,
-      description: targetExpend.description,
-      categoryId: targetExpend.category.id,
-      payerId: targetExpend.payer.id,
-      budgetId: targetExpend.budget.id,
-      paymentMethodId: targetExpend.paymentMethod.id,
-      processed: targetExpend.processed,
+      date,
+      price,
+      description,
+      categoryId: category.id,
+      payerId: payer.id,
+      budgetId: budget.id,
+      paymentMethodId: paymentMethod.id,
+      processed,
     });
     openUpdateExpendDialog();
   }
@@ -216,10 +233,8 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
    * 指定されたidの支出レコードを削除する
    * @param id - 支出レコードのid
    */
-  const clickDeleteExpend = async (id: string) => {
-    const variables = {
-      id: Number(id),
-    };
+  const clickDeleteExpend = async (id: number) => {
+    const variables = { id };
     await deleteExpend({ variables });
     refetch();
   };
@@ -243,7 +258,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   }
 
   if (errorWhileloadingExpends)
-    return <p>Oh no... {errorWhileloadingExpends.message}</p>;
+    return <p>Oh no... {errorWhileloadingExpends.status}</p>;
   if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.message}</p>;
   if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.message}</p>;
 
@@ -275,7 +290,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
             </button>
           </div>
         </div>
-        {loadingExpends ? (
+        {isLoadingExpends ? (
           <SkeletonTable />
         ) : (
           <div className={styles.tableWrapper}>
@@ -296,7 +311,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
               </thead>
               <tbody>
                 {filteredExpends &&
-                  filteredExpends.map((expend: any) => (
+                  filteredExpends.map((expend) => (
                     <tr key={expend.id}>
                       <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
                       <td>{formatPrice(expend.price)}</td>
