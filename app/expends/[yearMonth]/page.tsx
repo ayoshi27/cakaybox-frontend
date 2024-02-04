@@ -131,8 +131,11 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     error: errorWhileLoadingPaymentMethods,
   } = useAllPaymentMethodsQuery();
 
-  const { createExpend, loadingCreate, errorWhileCreating } =
-    useCreateExpendMutation();
+  const {
+    mutateAsync: createExpend,
+    isPending: loadingCreate,
+    error: errorWhileCreating,
+  } = useCreateExpendMutation();
 
   const { deleteExpend, loadingDeletion, errorWhileDeletion } =
     useDeleteExpendMutation();
@@ -181,7 +184,9 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     paymentMethodId: number;
     processed: boolean;
   }) => {
-    await createExpend({ variables });
+    await createExpend({
+      body: variables,
+    });
     refetch();
     closeAddExpendDialog();
   };
@@ -268,7 +273,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
 
   if (errorWhileloadingExpends)
     return <p>Oh no... {errorWhileloadingExpends.status}</p>;
-  if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.message}</p>;
+  if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.status}</p>;
   if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.message}</p>;
 
   return (
