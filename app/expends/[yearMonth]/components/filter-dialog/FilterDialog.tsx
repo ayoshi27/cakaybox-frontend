@@ -38,21 +38,21 @@ export default function FilterDialog(props: {
   function onChangeCategory(e: any): void {
     const newValue = [...e.target.options]
       .filter((option: any) => option.selected)
-      .map((option: any) => option.value);
+      .map((option: any) => Number(option.value));
     setCategoryIdList(newValue);
   }
 
   function onChangePaymentMethod(e: any): void {
     const newValue = [...e.target.options]
       .filter((option: any) => option.selected)
-      .map((option: any) => option.value);
+      .map((option: any) => Number(option.value));
     setPaymentMethodIdList(newValue);
   }
 
   function onChangeBudget(e: any): void {
     const newValue = [...e.target.options]
       .filter((option: any) => option.selected)
-      .map((option: any) => option.value);
+      .map((option: any) => Number(option.value));
     setBudgetIdList(newValue);
   }
 
