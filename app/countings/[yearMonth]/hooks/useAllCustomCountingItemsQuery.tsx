@@ -1,51 +1,14 @@
-import { gql, useQuery } from "@apollo/client";
-
-const AllCustomCountingItemsQuery = gql`
-  query {
-    customCountingItem {
-      id
-      name
-      terms {
-        id
-        sign
-        coefficient
-        categories {
-          category {
-            id
-          }
-        }
-        budgets {
-          budget {
-            id
-          }
-        }
-        payers {
-          payer {
-            id
-          }
-        }
-        paymentMethods {
-          paymentMethod {
-            id
-          }
-        }
-        processed
-      }
-    }
-  }
-`;
+import { client } from "@/lib/query";
 
 /** 登録されているすべてのカスタム集計項目を取得する */
 export function useAllCustomCountingItemsQuery() {
-  const {
-    data,
-    loading: loadingCustomCountingItems,
-    error: errorWhileLoadingCustomCountingItems,
-  } = useQuery(AllCustomCountingItemsQuery);
+  const { data, isLoading, error, refetch } =
+    client.customCountingItems.getList.useQuery(["customCountingItems"]);
 
   return {
-    customCountingItems: data?.customCountingItem,
-    loadingCustomCountingItems,
-    errorWhileLoadingCustomCountingItems,
+    data: data?.body,
+    isLoading,
+    error,
+    refetch,
   };
 }

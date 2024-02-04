@@ -14,7 +14,7 @@ import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpend
 import FilterDialog from "./components/filter-dialog/FilterDialog";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import { formatPrice } from "@/app/utils/stringUtils";
-import { useAllExpendsQuery } from "./hooks/useAllExpendsQuery";
+import { useAllExpendsQuery } from "../../shared/hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
 import { useAllPayersQuery } from "@/app/shared/hooks/useAllPayersQuery";

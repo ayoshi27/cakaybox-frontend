@@ -1,41 +1,14 @@
-import { gql, useQuery } from "@apollo/client";
-
-const AllCountingItemsQuery = gql`
-  query {
-    countingItem {
-      id
-      code
-      name
-      payers {
-        payer {
-          id
-        }
-      }
-      budgets {
-        budget {
-          id
-        }
-      }
-      paymentMethods {
-        paymentMethod {
-          id
-        }
-      }
-    }
-  }
-`;
+import { client } from "@/lib/query";
 
 /** 登録されているすべての集計項目を取得する */
 export function useAllCountingItemsQuery() {
-  const {
-    data,
-    loading: loadingCountingItems,
-    error: errorWhileLoadingCountingItems,
-  } = useQuery(AllCountingItemsQuery);
+  const { data, isLoading, error, refetch } =
+    client.countingItems.getList.useQuery(["countingItems"]);
 
   return {
-    countingItems: data?.countingItem,
-    loadingCountingItems,
-    errorWhileLoadingCountingItems,
+    data: data?.body,
+    isLoading,
+    error,
+    refetch,
   };
 }
