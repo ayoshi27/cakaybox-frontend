@@ -12,6 +12,10 @@ export const metadata = {
     index: false,
     follow: false,
   },
+  appleWebApp: {
+    title: "Cakaybox",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export default function RootLayout({
