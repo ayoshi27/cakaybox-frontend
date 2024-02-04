@@ -137,8 +137,11 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     error: errorWhileCreating,
   } = useCreateExpendMutation();
 
-  const { deleteExpend, loadingDeletion, errorWhileDeletion } =
-    useDeleteExpendMutation();
+  const {
+    mutateAsync: deleteExpend,
+    isPending: loadingDeletion,
+    error: errorWhileDeletion,
+  } = useDeleteExpendMutation();
 
   const { updateExpend, loadingUpdate, errorWhileUpdating } =
     useUpdateExpendMutation();
@@ -248,8 +251,9 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
    * @param id - 支出レコードのid
    */
   const clickDeleteExpend = async (id: number) => {
-    const variables = { id };
-    await deleteExpend({ variables });
+    await deleteExpend({
+      params: { id: String(id) },
+    });
     refetch();
   };
 
@@ -274,7 +278,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
   if (errorWhileloadingExpends)
     return <p>Oh no... {errorWhileloadingExpends.status}</p>;
   if (errorWhileCreating) return <p>Oh no... {errorWhileCreating.status}</p>;
-  if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.message}</p>;
+  if (errorWhileDeletion) return <p>Oh no... {errorWhileDeletion.status}</p>;
 
   return (
     <>
