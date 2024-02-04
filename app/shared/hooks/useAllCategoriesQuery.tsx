@@ -1,26 +1,15 @@
-import { useQuery, gql } from "@apollo/client";
-
-const AllCategoriesQuery = gql`
-  query {
-    categories {
-      id
-      name
-      limit
-    }
-  }
-`;
+import { client } from "@/lib/query";
 
 /** 登録されているすべてのカテゴリーを取得する */
 export function useAllCategoriesQuery() {
-  const {
-    data: categories,
-    loading: loadingCategories,
-    error: errorWhileLoadingCategories,
-  } = useQuery(AllCategoriesQuery);
+  const { data, isLoading, error, refetch } = client.categories.getList.useQuery([
+    "categories",
+  ]);
 
   return {
-    categories: categories?.categories,
-    loadingCategories,
-    errorWhileLoadingCategories,
+    data: data?.body,
+    isLoading,
+    error,
+    refetch,
   };
 }

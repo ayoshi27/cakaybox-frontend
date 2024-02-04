@@ -1,26 +1,14 @@
-import { useQuery, gql } from "@apollo/client";
-
-const AllPaymentMethodsQuery = gql`
-  query {
-    paymentMethods {
-      id
-      name
-      payerId
-    }
-  }
-`;
+import { client } from "@/lib/query";
 
 /** 登録されているすべての支払方法を取得する */
 export function useAllPaymentMethodsQuery() {
-  const {
-    data: paymentMethods,
-    loading: loadingPaymentMethods,
-    error: errorWhileLoadingPaymentMethods,
-  } = useQuery(AllPaymentMethodsQuery);
+  const { data, isLoading, error, refetch } =
+    client.paymentMethods.getList.useQuery(["paymentMethods"]);
 
   return {
-    paymentMethods: paymentMethods?.paymentMethods,
-    loadingPaymentMethods,
-    errorWhileLoadingPaymentMethods,
+    data: data?.body,
+    isLoading,
+    error,
+    refetch,
   };
 }

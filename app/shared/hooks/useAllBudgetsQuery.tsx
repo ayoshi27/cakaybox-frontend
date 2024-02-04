@@ -1,25 +1,15 @@
-import { useQuery, gql } from "@apollo/client";
-
-const AllBudgetsQuery = gql`
-  query {
-    budgets {
-      id
-      name
-    }
-  }
-`;
+import { client } from "@/lib/query";
 
 /** 登録されているすべての支出元を取得する */
 export function useAllBudgetsQuery() {
-  const {
-    data: budgets,
-    loading: loadingBudgets,
-    error: errorWhileLoadingBudgets,
-  } = useQuery(AllBudgetsQuery);
+  const { data, isLoading, error, refetch } = client.budgets.getList.useQuery([
+    "budgets",
+  ]);
 
   return {
-    budgets: budgets?.budgets,
-    loadingBudgets,
-    errorWhileLoadingBudgets,
+    data: data?.body,
+    isLoading,
+    error,
+    refetch,
   };
 }

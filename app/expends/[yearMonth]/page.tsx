@@ -107,19 +107,28 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     );
   });
 
-  const { categories, loadingCategories, errorWhileLoadingCategories } =
-    useAllCategoriesQuery();
-
-  const { payers, loadingPayers, errorWhileLoadingPayers } =
-    useAllPayersQuery();
-
-  const { budgets, loadingBudgets, errorWhileLoadingBudgets } =
-    useAllBudgetsQuery();
+  const {
+    data: budgets,
+    isLoading: loadingBudgets,
+    error: errorWhileLoadingBudgets,
+  } = useAllBudgetsQuery();
 
   const {
-    paymentMethods,
-    loadingPaymentMethods,
-    errorWhileLoadingPaymentMethods,
+    data: categories,
+    isLoading: loadingCategories,
+    error: errorWhileLoadingCategories,
+  } = useAllCategoriesQuery();
+
+  const {
+    data: payers,
+    isLoading: loadingPayers,
+    error: errorWhileLoadingPayers,
+  } = useAllPayersQuery();
+
+  const {
+    data: paymentMethods,
+    isLoading: loadingPaymentMethods,
+    error: errorWhileLoadingPaymentMethods,
   } = useAllPaymentMethodsQuery();
 
   const { createExpend, loadingCreate, errorWhileCreating } =
