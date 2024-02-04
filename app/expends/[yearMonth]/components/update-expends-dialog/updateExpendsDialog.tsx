@@ -61,9 +61,8 @@ export default function UpdateExpendsDialog(props: {
 
   // NOTE: stringかnumber型で引数を受け取れるようにしてhelper関数として切り出したい
   function findPayerIdForPaymentMethodId(paymentMethodId: number): number {
-    return paymentMethods.find(
-      (method: any) => method.id === String(paymentMethodId)
-    ).payerId;
+    return paymentMethods.find((method: any) => method.id === paymentMethodId)
+      .payerId;
   }
 
   return (

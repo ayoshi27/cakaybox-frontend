@@ -143,8 +143,11 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     error: errorWhileDeletion,
   } = useDeleteExpendMutation();
 
-  const { updateExpend, loadingUpdate, errorWhileUpdating } =
-    useUpdateExpendMutation();
+  const {
+    mutateAsync: updateExpend,
+    isPending: loadingUpdate,
+    error: errorWhileUpdating,
+  } = useUpdateExpendMutation();
 
   const selectItemLoading =
     loadingCategories ||
@@ -199,6 +202,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
    * @param variables - 更新するレコードの値
    */
   const onUpdateExpend = async (variables: {
+    id: number;
     date: string;
     price: number;
     description: string;
@@ -208,7 +212,10 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     paymentMethodId: number;
     processed: boolean;
   }) => {
-    await updateExpend({ variables });
+    await updateExpend({
+      body: variables,
+      params: { id: String(variables.id) },
+    });
     refetch();
     closeUpdateExpendDialog();
   };
