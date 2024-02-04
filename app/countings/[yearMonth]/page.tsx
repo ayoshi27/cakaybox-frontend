@@ -29,14 +29,13 @@ export default function Counting({
     yearMonth: yearMonth,
   });
 
+  type expendsType = typeof expends;
   /**
    * 引数で渡される支出の合計金額を算出する
    * @param expends - 支出一覧
    */
-  const getSumPrice = (expends: any) => {
-    return (
-      expends?.reduce((acc: number, expend: any) => acc + expend.price, 0) || 0
-    );
+  const getSumPrice = (expends: expendsType) => {
+    return expends?.reduce((acc: number, expend) => acc + expend.price, 0) || 0;
   };
 
   /**
@@ -50,7 +49,13 @@ export default function Counting({
   const tableRecords = categories?.map((category) => {
     const filteredExpendsByCategory = filterExpendsByCategory(category.id);
     const sum = getSumPrice(filteredExpendsByCategory);
-    const records: any = {
+    const records: {
+      id: number;
+      name: string;
+      sum: number;
+      rest: number;
+      [key: string]: any;
+    } = {
       id: category.id,
       name: category.name,
       sum,
@@ -59,25 +64,25 @@ export default function Counting({
 
     countingItems?.forEach((countingItem) => {
       const filteredExpendsByCountingItem = filteredExpendsByCategory?.filter(
-        (expend: any) => {
+        (expend) => {
           const payerFilter =
             countingItem.payers.length > 0
               ? countingItem.payers
-                  .map((item) => item.id)
+                  .map((item) => item.payer.id)
                   .includes(expend.payer.id)
               : false;
 
           const budgetFilter =
             countingItem.budgets.length > 0
               ? countingItem.budgets
-                  .map((item) => item.id)
+                  .map((item) => item.budget.id)
                   .includes(expend.budget.id)
               : false;
 
           const paymentMethodFilter =
             countingItem.paymentMethods.length > 0
               ? countingItem.paymentMethods
-                  .map((item) => item.id)
+                  .map((item) => item.paymentMethod.id)
                   .includes(expend.paymentMethod.id)
               : false;
 
@@ -93,8 +98,6 @@ export default function Counting({
   const customCountingItemsTableRecords = customCountingItems?.map(
     (customCountingItem) => {
       const sum = customCountingItem.terms.reduce((acc, term) => {
-        if (customCountingItem.id === 2) {
-        }
         const filteredExpendsByCustomCountingItem = expends?.filter(
           (expend) => {
             const categoryFilter =

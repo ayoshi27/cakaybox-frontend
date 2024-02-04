@@ -7,17 +7,23 @@ const CountingItemsSchema = z.object({
   name: z.string(),
   payers: z.array(
     z.object({
-      id: z.number(),
+      payer: z.object({
+        id: z.number(),
+      }),
     }),
   ),
   budgets: z.array(
     z.object({
-      id: z.number(),
+      budget: z.object({
+        id: z.number(),
+      }),
     }),
   ),
   paymentMethods: z.array(
     z.object({
-      id: z.number(),
+      paymentMethod: z.object({
+        id: z.number(),
+      }),
     }),
   ),
   processed: z.array(z.boolean()),
