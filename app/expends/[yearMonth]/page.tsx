@@ -75,7 +75,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     categoryIdList: [],
     budgetIdList: [],
     paymentMethodIdList: [],
-    isProcessedList: [true, false],
+    isProcessedList: [],
   });
 
   const {
@@ -172,7 +172,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
       categoryIdList: [],
       budgetIdList: [],
       paymentMethodIdList: [],
-      isProcessedList: [true, false],
+      isProcessedList: [],
     });
   }
 
@@ -402,6 +402,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
           payers={payers}
           budgets={budgets}
           paymentMethods={paymentMethods}
+          initialValue={filterConditions}
           applyFilterConditions={applyFilterConditions}
         />
       )}

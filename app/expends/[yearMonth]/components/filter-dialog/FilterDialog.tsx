@@ -8,6 +8,7 @@ export default function FilterDialog(props: {
   payers: any;
   budgets: any;
   paymentMethods: any;
+  initialValue: any;
   applyFilterConditions: (newValue: any) => void;
 }) {
   const {
@@ -16,13 +17,22 @@ export default function FilterDialog(props: {
     categories,
     budgets,
     paymentMethods,
+    initialValue,
     applyFilterConditions,
   } = props;
 
-  const [categoryIdList, setCategoryIdList] = useState<number[]>([]);
-  const [budgetIdList, setBudgetIdList] = useState<number[]>([]);
-  const [paymentMethodIdList, setPaymentMethodIdList] = useState<number[]>([]);
-  const [isProcessedList, setIsProcessedList] = useState([true, false]);
+  const [categoryIdList, setCategoryIdList] = useState<number[]>(
+    initialValue.categoryIdList
+  );
+  const [budgetIdList, setBudgetIdList] = useState<number[]>(
+    initialValue.budgetIdList
+  );
+  const [paymentMethodIdList, setPaymentMethodIdList] = useState<number[]>(
+    initialValue.paymentMethodIdList
+  );
+  const [isProcessedList, setIsProcessedList] = useState<boolean[]>(
+    initialValue.isProcessedList
+  );
 
   /** 表示ボタンを押した時の処理 */
   function handleDisplayButton(): void {
@@ -32,7 +42,6 @@ export default function FilterDialog(props: {
       paymentMethodIdList: paymentMethodIdList,
       isProcessedList: isProcessedList,
     });
-    resetFormValue();
   }
 
   function onChangeCategory(e: any): void {
@@ -63,21 +72,17 @@ export default function FilterDialog(props: {
     setIsProcessedList(newValue);
   }
 
-  /** フォームの値をリセットする */
-  function resetFormValue(): void {
-    setCategoryIdList([]);
-    setIsProcessedList([]);
-    setBudgetIdList([]);
-    setPaymentMethodIdList([]);
-  }
-
   return (
     <Dialog isLoading={isLoading}>
       <h2 className={styles.dialogTitle}>支出を絞り込んで表示する</h2>
 
       <div className={styles.formItem}>
         カテゴリー:
-        <select onChange={(e) => onChangeCategory(e)} multiple>
+        <select
+          onChange={(e) => onChangeCategory(e)}
+          multiple
+          defaultValue={initialValue.categoryIdList}
+        >
           {categories.map((category: any) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -88,7 +93,11 @@ export default function FilterDialog(props: {
 
       <div className={styles.formItem}>
         支払方法:
-        <select onChange={(e) => onChangePaymentMethod(e)} multiple>
+        <select
+          onChange={(e) => onChangePaymentMethod(e)}
+          multiple
+          defaultValue={initialValue.paymentMethodIdList}
+        >
           {paymentMethods.map((paymentMethod: any) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
               {paymentMethod.name}
@@ -99,7 +108,11 @@ export default function FilterDialog(props: {
 
       <div className={styles.formItem}>
         支出元:
-        <select onChange={(e) => onChangeBudget(e)} multiple>
+        <select
+          onChange={(e) => onChangeBudget(e)}
+          multiple
+          defaultValue={initialValue.budgetIdList}
+        >
           {budgets.map((budget: any) => (
             <option key={budget.id} value={budget.id}>
               {budget.name}
@@ -110,7 +123,11 @@ export default function FilterDialog(props: {
 
       <div className={styles.formItem}>
         精算済:
-        <select onChange={(e) => onChangeIsProcessed(e)} multiple>
+        <select
+          onChange={(e) => onChangeIsProcessed(e)}
+          multiple
+          defaultValue={initialValue.isProcessedList}
+        >
           {[
             { label: "精算済", value: true },
             { label: "未精算", value: false },
