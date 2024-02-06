@@ -335,7 +335,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                 </tr>
               </thead>
               <tbody>
-                {filteredExpends &&
+                {filteredExpends?.length ? (
                   filteredExpends.map((expend) => (
                     <tr key={expend.id}>
                       <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
@@ -363,7 +363,10 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <tr><td>表示するデータがありません。</td></tr>
+                )}
               </tbody>
             </table>
           </div>
