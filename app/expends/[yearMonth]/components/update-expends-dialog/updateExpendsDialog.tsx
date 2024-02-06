@@ -98,7 +98,10 @@ export default function UpdateExpendsDialog(props: {
 
       <div className={styles.formItem}>
         カテゴリー:
-        <select onChange={(e) => setCategoryId(Number(e.currentTarget.value))}>
+        <select
+          onChange={(e) => setCategoryId(Number(e.currentTarget.value))}
+          defaultValue={initialValue.categoryId}
+        >
           {categories.map((category: any) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -111,6 +114,7 @@ export default function UpdateExpendsDialog(props: {
         支払方法:
         <select
           onChange={(e) => setPaymentMethodId(Number(e.currentTarget.value))}
+          defaultValue={initialValue.paymentMethodId}
         >
           {paymentMethods.map((paymentMethod: any) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
@@ -122,7 +126,10 @@ export default function UpdateExpendsDialog(props: {
 
       <div className={styles.formItem}>
         支出元:
-        <select onChange={(e) => setBudgetId(Number(e.currentTarget.value))}>
+        <select
+          onChange={(e) => setBudgetId(Number(e.currentTarget.value))}
+          defaultValue={initialValue.budgetId}
+        >
           {budgets.map((budget: any) => (
             <option key={budget.id} value={budget.id}>
               {budget.name}
