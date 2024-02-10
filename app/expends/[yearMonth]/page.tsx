@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dayjs from "dayjs";
+import "dayjs/locale/ja";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import styles from "./expends.module.scss";
@@ -14,6 +15,7 @@ import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpend
 import FilterDialog from "./components/filter-dialog/FilterDialog";
 import SkeletonTable from "@/app/shared/skeleton-table/SkeltonTable";
 import { formatPrice } from "@/app/utils/stringUtils";
+import { isSaturday, isSunday } from "@/app/utils/dateUtils";
 import { useAllExpendsQuery } from "../../shared/hooks/useAllExpendsQuery";
 import { useCreateExpendMutation } from "./hooks/useCreateExpendMutation";
 import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery";
@@ -22,6 +24,8 @@ import { useAllBudgetsQuery } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
 import { useUpdateExpendMutation } from "./hooks/useUpdateExpendMutation";
+
+dayjs.locale("ja");
 
 export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { yearMonth } = params;
@@ -338,7 +342,17 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                 {filteredExpends?.length ? (
                   filteredExpends.map((expend) => (
                     <tr key={expend.id}>
-                      <td>{dayjs(expend.date).format("YYYY/MM/DD")}</td>
+                      <td
+                        className={
+                          isSunday(dayjs(expend.date))
+                            ? styles.isSunday
+                            : isSaturday(dayjs(expend.date))
+                            ? styles.isSaturday
+                            : ""
+                        }
+                      >
+                        {dayjs(expend.date).format("MM/DD(dd)")}
+                      </td>
                       <td>{formatPrice(expend.price)}</td>
                       <td>{expend.description}</td>
                       <td>{expend.category.name}</td>
@@ -365,7 +379,9 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
                     </tr>
                   ))
                 ) : (
-                  <tr><td>表示するデータがありません。</td></tr>
+                  <tr>
+                    <td>表示するデータがありません。</td>
+                  </tr>
                 )}
               </tbody>
             </table>
