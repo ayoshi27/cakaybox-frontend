@@ -9,8 +9,34 @@
 }
 
 .dialogTitle {
+  display: flex;
+  align-items: center;
   font-size: 1.25rem;
+
+  span {
+    margin-left: 8px;
+  }
+}
+
+.dialogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
+}
+
+.favoriteButton {
+  @include button();
+  background-color: #f9f9f9;
+  width: 120px;
+
+  &:hover {
+    background: darken(#f9f9f9, 10);
+  }
+
+  span {
+    margin-left: 4px;
+  }
 }
 
 .formItem {
@@ -43,5 +69,21 @@
 
   &:hover {
     background: darken(#1976d2, 10);
+  }
+}
+
+.favoriteItem {
+  & + & {
+    margin-top: 8px;
+  }
+}
+.favoriteItemButton {
+  @include button();
+  justify-content: flex-start;
+  background-color: #f9f9f9;
+  width: 100%;
+
+  &:hover {
+    background: darken(#f9f9f9, 10);
   }
 }

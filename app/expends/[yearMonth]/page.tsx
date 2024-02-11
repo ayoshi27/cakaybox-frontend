@@ -22,6 +22,7 @@ import { useAllCategoriesQuery } from "@/app/shared/hooks/useAllCategoriesQuery"
 import { useAllPayersQuery } from "@/app/shared/hooks/useAllPayersQuery";
 import { useAllBudgetsQuery } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
+import { useAllFavoriteExpendItemsQuery } from "@/app/shared/hooks/useAllFavoriteExpendItemsQuery";
 import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
 import { useUpdateExpendMutation } from "./hooks/useUpdateExpendMutation";
 
@@ -134,6 +135,12 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
     isLoading: loadingPaymentMethods,
     error: errorWhileLoadingPaymentMethods,
   } = useAllPaymentMethodsQuery();
+
+  const {
+    data: favoriteExpendItems,
+    isLoading: loadingFavoriteExpendItems,
+    error: errorWhileLoadingFavoriteExpendItems,
+  } = useAllFavoriteExpendItemsQuery();
 
   const {
     mutateAsync: createExpend,
@@ -397,6 +404,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
           payers={payers}
           budgets={budgets}
           paymentMethods={paymentMethods}
+          favoriteExpendList={favoriteExpendItems}
           addExpend={addExpend}
         />
       )}

@@ -9,14 +9,20 @@ main {
   }
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 table {
   border-collapse: collapse;
-  width: 100%
+  width: 100%;
 }
 tr {
   border-bottom: 1px solid #e0e0e0;
 }
-th, td {
+th,
+td {
   padding: 0 10px;
   white-space: nowrap;
 }
@@ -27,7 +33,7 @@ th {
   height: 56px;
 
   & + th::after {
-    content: '';
+    content: "";
     display: block;
     height: 14px;
     width: 2px;
