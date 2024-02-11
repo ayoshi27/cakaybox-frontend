@@ -25,9 +25,9 @@ import { useAllPaymentMethodsQuery } from "@/app/shared/hooks/useAllPaymentMetho
 import { useAllFavoriteExpendItemsQuery } from "@/app/shared/hooks/useAllFavoriteExpendItemsQuery";
 import { useDeleteExpendMutation } from "./hooks/useDeleteExpendMutation";
 import { useUpdateExpendMutation } from "./hooks/useUpdateExpendMutation";
+import { isMobileDevice } from "@/app/utils/userAgentUtils";
 
 dayjs.locale("ja");
-
 export default function Expends({ params }: { params: { yearMonth: string } }) {
   const { yearMonth } = params;
   const router = useRouter();
@@ -330,68 +330,122 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
           <SkeletonTable />
         ) : (
           <div className={styles.tableWrapper}>
-            <table className={styles.expendsTable}>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>料金</th>
-                  <th>内容</th>
-                  <th>カテゴリー</th>
-                  <th>支払者</th>
-                  <th>支払方法</th>
-                  <th>支払元</th>
-                  <th>精算済</th>
-                  <th>編集</th>
-                  <th>削除</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpends?.length ? (
-                  filteredExpends.map((expend) => (
-                    <tr key={expend.id}>
-                      <td
-                        className={
-                          isSunday(dayjs(expend.date))
-                            ? styles.isSunday
-                            : isSaturday(dayjs(expend.date))
-                            ? styles.isSaturday
-                            : ""
-                        }
-                      >
-                        {dayjs(expend.date).format("MM/DD(dd)")}
-                      </td>
-                      <td>{formatPrice(expend.price)}</td>
-                      <td>{expend.description}</td>
-                      <td>{expend.category.name}</td>
-                      <td>{expend.payer.name}</td>
-                      <td>{expend.paymentMethod.name}</td>
-                      <td>{expend.budget.name}</td>
-                      <td>{expend.processed ? "済" : "未"}</td>
-                      <td>
-                        <button
-                          className={styles.tableButton}
-                          onClick={() => onClickUpdateButton(expend.id)}
+            {isMobileDevice() ? (
+              <>
+                <div className={styles.expendsListHeader}>
+                  <div>日付</div>
+                  <div>料金</div>
+                  <div>内容</div>
+                </div>
+                <ul className={styles.expendsList}>
+                  {filteredExpends?.length ? (
+                    filteredExpends.map((expend) => (
+                      <li key={expend.id} className={styles.expendsListItem}>
+                        <div
+                          className={[
+                            styles.expendsListItemDate,
+                            isSunday(dayjs(expend.date))
+                              ? styles.isSunday
+                              : isSaturday(dayjs(expend.date))
+                              ? styles.isSaturday
+                              : "",
+                          ].join(" ")}
                         >
-                          編集
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className={styles.tableButton}
-                          onClick={() => clickDeleteExpend(expend.id)}
-                        >
-                          削除
-                        </button>
-                      </td>
+                          {dayjs(expend.date).format("MM/DD(dd)")}
+                        </div>
+                        <div className={styles.expendsListItemPrice}>
+                          {formatPrice(expend.price)}
+                        </div>
+                        <div className={styles.expendsListItemDescription}>
+                          {expend.description}
+                        </div>
+                        <div className={styles.expendsListItemButtons}>
+                          <button
+                            className={styles.tableButton}
+                            onClick={() => onClickUpdateButton(expend.id)}
+                          >
+                            編集
+                          </button>
+                          <button
+                            className={styles.deleteButton}
+                            onClick={() => clickDeleteExpend(expend.id)}
+                          >
+                            削除
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <tr>
+                      <td>表示するデータがありません。</td>
                     </tr>
-                  ))
-                ) : (
+                  )}
+                </ul>
+              </>
+            ) : (
+              <table className={styles.expendsTable}>
+                <thead>
                   <tr>
-                    <td>表示するデータがありません。</td>
+                    <th>日付</th>
+                    <th>料金</th>
+                    <th>内容</th>
+                    <th>カテゴリー</th>
+                    <th>支払者</th>
+                    <th>支払方法</th>
+                    <th>支払元</th>
+                    <th>精算済</th>
+                    <th>編集</th>
+                    <th>削除</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredExpends?.length ? (
+                    filteredExpends.map((expend) => (
+                      <tr key={expend.id}>
+                        <td
+                          className={
+                            isSunday(dayjs(expend.date))
+                              ? styles.isSunday
+                              : isSaturday(dayjs(expend.date))
+                              ? styles.isSaturday
+                              : ""
+                          }
+                        >
+                          {dayjs(expend.date).format("MM/DD(dd)")}
+                        </td>
+                        <td>{formatPrice(expend.price)}</td>
+                        <td>{expend.description}</td>
+                        <td>{expend.category.name}</td>
+                        <td>{expend.payer.name}</td>
+                        <td>{expend.paymentMethod.name}</td>
+                        <td>{expend.budget.name}</td>
+                        <td>{expend.processed ? "済" : "未"}</td>
+                        <td>
+                          <button
+                            className={styles.tableButton}
+                            onClick={() => onClickUpdateButton(expend.id)}
+                          >
+                            編集
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className={styles.tableButton}
+                            onClick={() => clickDeleteExpend(expend.id)}
+                          >
+                            削除
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td>表示するデータがありません。</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
       </div>
