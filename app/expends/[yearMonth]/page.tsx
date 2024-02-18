@@ -10,7 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
-import { FilterCondition } from "./page.type";
+import { FilterCondition, UpdateDialogFormValue } from "./page.type";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpendsDialog";
 import FilterDialog from "./components/filter-dialog/FilterDialog";
@@ -50,17 +50,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
 
   const [updateExpendDialogId, setUpdateExpendDialogId] = useState(nanoid());
   const [initialValueForUpdateDialog, setInitialValueForUpdateDialog] =
-    useState<{
-      id: number;
-      date: string;
-      price: number;
-      description: string;
-      categoryId: number;
-      payerId: number;
-      budgetId: number;
-      paymentMethodId: number;
-      processed: boolean;
-    }>({
+    useState<UpdateDialogFormValue>({
       id: 0,
       date: "",
       price: 0,

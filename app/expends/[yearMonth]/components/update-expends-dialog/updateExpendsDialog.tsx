@@ -6,6 +6,7 @@ import { Categories } from "@/app/shared/hooks/useAllCategoriesQuery";
 import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
 import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
+import { UpdateDialogFormValue } from "@/app/expends/[yearMonth]/page.type";
 
 export default function UpdateExpendsDialog(props: {
   dialog: DialogType;
@@ -14,7 +15,7 @@ export default function UpdateExpendsDialog(props: {
   payers: Payers;
   budgets: Budgets;
   paymentMethods: PaymentMethods;
-  initialValue: any;
+  initialValue: UpdateDialogFormValue;
   updateExpend: (variables: {
     id: number;
     date: string;
@@ -66,8 +67,11 @@ export default function UpdateExpendsDialog(props: {
   }
 
   // NOTE: stringかnumber型で引数を受け取れるようにしてhelper関数として切り出したい
-  function findPayerIdForPaymentMethodId(paymentMethodId: number): number | undefined {
-    return paymentMethods.find((method) => method.id === paymentMethodId)?.payerId;
+  function findPayerIdForPaymentMethodId(
+    paymentMethodId: number
+  ): number | undefined {
+    return paymentMethods.find((method) => method.id === paymentMethodId)
+      ?.payerId;
   }
 
   return (
