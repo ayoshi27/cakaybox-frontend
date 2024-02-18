@@ -1,4 +1,11 @@
+import { ClientInferResponseBody } from "@ts-rest/core";
+import { contract } from "@/lib/contract";
 import { client } from "@/lib/query";
+
+export type Payers = ClientInferResponseBody<
+  typeof contract.payers.getList,
+  200
+>;
 
 /** 登録されているすべての支払者を取得する */
 export function useAllPayersQuery() {
@@ -6,8 +13,12 @@ export function useAllPayersQuery() {
     "payers",
   ]);
 
+  if (data?.status !== 200) {
+    throw new Error("could not get data");
+  }
+
   return {
-    data: data?.body,
+    data: data.body,
     isLoading,
     error,
     refetch,

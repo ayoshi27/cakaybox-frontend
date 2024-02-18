@@ -1,13 +1,18 @@
 import styles from "./FilterDialog.module.scss";
 import { useState } from "react";
+import { DialogType } from "@/app/shared/dialog";
+import { Categories } from "@/app/shared/hooks/useAllCategoriesQuery";
+import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
+import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
+import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 
 export default function FilterDialog(props: {
-  dialog: any;
+  dialog: DialogType;
   isLoading: boolean;
-  categories: any;
-  payers: any;
-  budgets: any;
-  paymentMethods: any;
+  categories: Categories;
+  payers: Payers;
+  budgets: Budgets;
+  paymentMethods: PaymentMethods;
   initialValue: any;
   applyFilterConditions: (newValue: any) => void;
 }) {
@@ -83,7 +88,7 @@ export default function FilterDialog(props: {
           multiple
           defaultValue={initialValue.categoryIdList}
         >
-          {categories.map((category: any) => (
+          {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -98,7 +103,7 @@ export default function FilterDialog(props: {
           multiple
           defaultValue={initialValue.paymentMethodIdList}
         >
-          {paymentMethods.map((paymentMethod: any) => (
+          {paymentMethods.map((paymentMethod) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
               {paymentMethod.name}
             </option>
@@ -113,7 +118,7 @@ export default function FilterDialog(props: {
           multiple
           defaultValue={initialValue.budgetIdList}
         >
-          {budgets.map((budget: any) => (
+          {budgets.map((budget) => (
             <option key={budget.id} value={budget.id}>
               {budget.name}
             </option>
@@ -131,8 +136,8 @@ export default function FilterDialog(props: {
           {[
             { label: "精算済", value: true },
             { label: "未精算", value: false },
-          ].map((isProcessed: any) => (
-            <option key={isProcessed.label} value={isProcessed.value}>
+          ].map((isProcessed) => (
+            <option key={isProcessed.label} value={String(isProcessed.value)}>
               {isProcessed.label}
             </option>
           ))}

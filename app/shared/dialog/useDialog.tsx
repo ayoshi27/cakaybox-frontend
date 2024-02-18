@@ -13,6 +13,8 @@ type Result = {
   Dialog: React.FC<Props>;
 };
 
+export type DialogType = Result['Dialog'];
+
 export const useDialog = (): Result => {
   const [isOpen, setOpen] = useState<boolean>(false);
 

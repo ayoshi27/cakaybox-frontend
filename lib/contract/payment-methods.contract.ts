@@ -4,6 +4,7 @@ import { z } from 'zod';
 const PaymentMethodSchema = z.object({
   id: z.number(),
   name: z.string(),
+  payerId: z.number()
 });
 
 const c = initContract();

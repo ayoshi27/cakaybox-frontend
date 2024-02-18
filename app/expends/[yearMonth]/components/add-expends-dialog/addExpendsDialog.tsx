@@ -2,15 +2,21 @@ import dayjs from "dayjs";
 import styles from "./addExpendsDialog.module.scss";
 import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { DialogType } from "@/app/shared/dialog";
+import { Categories } from "@/app/shared/hooks/useAllCategoriesQuery";
+import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
+import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
+import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
+import { FavoriteExpendItems } from "@/app/shared/hooks/useAllFavoriteExpendItemsQuery";
 
 export default function AddExpendsDialog(props: {
-  dialog: any;
+  dialog: DialogType;
   isLoading: boolean;
-  categories: any;
-  payers: any;
-  budgets: any;
-  paymentMethods: any;
-  favoriteExpendList: any;
+  categories: Categories;
+  payers: Payers;
+  budgets: Budgets;
+  paymentMethods: PaymentMethods;
+  favoriteExpendList: FavoriteExpendItems;
   addExpend: (variables: {
     date: string;
     price: number;
@@ -27,6 +33,7 @@ export default function AddExpendsDialog(props: {
     isLoading,
     categories,
     budgets,
+    payers,
     paymentMethods,
     favoriteExpendList,
     addExpend,
@@ -51,7 +58,8 @@ export default function AddExpendsDialog(props: {
       price: Number(price),
       description,
       categoryId,
-      payerId: findPayerIdForPaymentMethodId(paymentMethodId),
+      payerId:
+        findPayerIdForPaymentMethodId(paymentMethodId) || Number(payers[0].id),
       budgetId,
       paymentMethodId,
       processed: isProcessed,
@@ -75,9 +83,11 @@ export default function AddExpendsDialog(props: {
   }
 
   // NOTE: stringかnumber型で引数を受け取れるようにしてhelper関数として切り出したい
-  function findPayerIdForPaymentMethodId(paymentMethodId: number): number {
-    return paymentMethods.find((method: any) => method.id === paymentMethodId)
-      .payerId;
+  function findPayerIdForPaymentMethodId(
+    paymentMethodId: number
+  ): number | undefined {
+    return paymentMethods.find((method) => method.id === paymentMethodId)
+      ?.payerId;
   }
 
   /** フォームの値をリセットする */
@@ -102,17 +112,17 @@ export default function AddExpendsDialog(props: {
             </h2>
           </div>
           <ul>
-            {favoriteExpendList?.map((favoriteExpend: any) => (
+            {favoriteExpendList?.map((favoriteExpend) => (
               <li key={favoriteExpend.id} className={styles.favoriteItem}>
                 <button
                   className={styles.favoriteItemButton}
                   onClick={() => {
                     handleClickFavoriteExpendItem({
                       description: favoriteExpend.description,
-                      categoryId: favoriteExpend.categoryId,
-                      payerId: favoriteExpend.payerId,
-                      budgetId: favoriteExpend.budgetId,
-                      paymentMethodId: favoriteExpend.paymentMethodId,
+                      categoryId: favoriteExpend.category.id,
+                      payerId: favoriteExpend.payer.id,
+                      budgetId: favoriteExpend.budget.id,
+                      paymentMethodId: favoriteExpend.paymentMethod.id,
                     });
                   }}
                 >
@@ -170,7 +180,7 @@ export default function AddExpendsDialog(props: {
               onChange={(e) => setCategoryId(Number(e.currentTarget.value))}
               value={categoryId}
             >
-              {categories.map((category: any) => (
+              {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
@@ -186,7 +196,7 @@ export default function AddExpendsDialog(props: {
               }
               value={paymentMethodId}
             >
-              {paymentMethods.map((paymentMethod: any) => (
+              {paymentMethods.map((paymentMethod) => (
                 <option key={paymentMethod.id} value={paymentMethod.id}>
                   {paymentMethod.name}
                 </option>
@@ -200,7 +210,7 @@ export default function AddExpendsDialog(props: {
               onChange={(e) => setBudgetId(Number(e.currentTarget.value))}
               value={budgetId}
             >
-              {budgets.map((budget: any) => (
+              {budgets.map((budget) => (
                 <option key={budget.id} value={budget.id}>
                   {budget.name}
                 </option>

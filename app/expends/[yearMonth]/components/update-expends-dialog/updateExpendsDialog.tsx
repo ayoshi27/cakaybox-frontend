@@ -1,14 +1,19 @@
 import dayjs from "dayjs";
 import styles from "./updateExpendsDialog.module.scss";
 import { useState } from "react";
+import { DialogType } from "@/app/shared/dialog";
+import { Categories } from "@/app/shared/hooks/useAllCategoriesQuery";
+import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
+import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
+import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 
 export default function UpdateExpendsDialog(props: {
-  dialog: any;
+  dialog: DialogType;
   isLoading: boolean;
-  categories: any;
-  payers: any;
-  budgets: any;
-  paymentMethods: any;
+  categories: Categories;
+  payers: Payers;
+  budgets: Budgets;
+  paymentMethods: PaymentMethods;
   initialValue: any;
   updateExpend: (variables: {
     id: number;
@@ -27,6 +32,7 @@ export default function UpdateExpendsDialog(props: {
     isLoading,
     categories,
     budgets,
+    payers,
     paymentMethods,
     initialValue,
     updateExpend,
@@ -52,7 +58,7 @@ export default function UpdateExpendsDialog(props: {
       price: Number(price),
       description,
       categoryId,
-      payerId: findPayerIdForPaymentMethodId(paymentMethodId),
+      payerId: findPayerIdForPaymentMethodId(paymentMethodId) || payers[0].id,
       budgetId,
       paymentMethodId,
       processed: isProcessed,
@@ -60,9 +66,8 @@ export default function UpdateExpendsDialog(props: {
   }
 
   // NOTE: stringかnumber型で引数を受け取れるようにしてhelper関数として切り出したい
-  function findPayerIdForPaymentMethodId(paymentMethodId: number): number {
-    return paymentMethods.find((method: any) => method.id === paymentMethodId)
-      .payerId;
+  function findPayerIdForPaymentMethodId(paymentMethodId: number): number | undefined {
+    return paymentMethods.find((method) => method.id === paymentMethodId)?.payerId;
   }
 
   return (
@@ -102,7 +107,7 @@ export default function UpdateExpendsDialog(props: {
           onChange={(e) => setCategoryId(Number(e.currentTarget.value))}
           defaultValue={initialValue.categoryId}
         >
-          {categories.map((category: any) => (
+          {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -116,7 +121,7 @@ export default function UpdateExpendsDialog(props: {
           onChange={(e) => setPaymentMethodId(Number(e.currentTarget.value))}
           defaultValue={initialValue.paymentMethodId}
         >
-          {paymentMethods.map((paymentMethod: any) => (
+          {paymentMethods.map((paymentMethod) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
               {paymentMethod.name}
             </option>
@@ -130,7 +135,7 @@ export default function UpdateExpendsDialog(props: {
           onChange={(e) => setBudgetId(Number(e.currentTarget.value))}
           defaultValue={initialValue.budgetId}
         >
-          {budgets.map((budget: any) => (
+          {budgets.map((budget) => (
             <option key={budget.id} value={budget.id}>
               {budget.name}
             </option>

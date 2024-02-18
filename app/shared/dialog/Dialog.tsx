@@ -6,7 +6,7 @@ import styles from "./Dialog.module.scss";
 type Props = {
   isOpen: boolean;
   isLoading: boolean;
-  children: React.ReactNode | React.ReactNodeArray;
+  children: React.ReactNode | React.ReactNode[];
   onClose: VoidFunction;
 };
 
