@@ -52,31 +52,31 @@ export default function FilterDialog(props: {
     });
   }
 
-  function onChangeCategory(e: any): void {
+  function onChangeCategory(e: { target: HTMLSelectElement }): void {
     const newValue = [...e.target.options]
-      .filter((option: any) => option.selected)
-      .map((option: any) => Number(option.value));
+      .filter((option) => option.selected)
+      .map((option) => Number(option.value));
     setCategoryIdList(newValue);
   }
 
-  function onChangePaymentMethod(e: any): void {
+  function onChangePaymentMethod(e: { target: HTMLSelectElement }): void {
     const newValue = [...e.target.options]
-      .filter((option: any) => option.selected)
-      .map((option: any) => Number(option.value));
+      .filter((option) => option.selected)
+      .map((option) => Number(option.value));
     setPaymentMethodIdList(newValue);
   }
 
-  function onChangeBudget(e: any): void {
+  function onChangeBudget(e: { target: HTMLSelectElement }): void {
     const newValue = [...e.target.options]
-      .filter((option: any) => option.selected)
-      .map((option: any) => Number(option.value));
+      .filter((option) => option.selected)
+      .map((option) => Number(option.value));
     setBudgetIdList(newValue);
   }
 
-  function onChangeIsProcessed(e: any): void {
+  function onChangeIsProcessed(e: { target: HTMLSelectElement }): void {
     const newValue = [...e.target.options]
-      .filter((option: any) => option.selected)
-      .map((option: any) => (option.value === "true" ? true : false));
+      .filter((option) => option.selected)
+      .map((option) => (option.value === "true" ? true : false));
     setIsProcessedList(newValue);
   }
 
