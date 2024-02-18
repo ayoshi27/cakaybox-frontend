@@ -6,6 +6,8 @@ import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
 import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
 import { FilterCondition } from "@/app/expends/[yearMonth]/page.type";
+import { convertNumberArrayToStringArray } from "@/app/utils/numberUtils";
+import { convertBooleanArrayToStringArray } from "@/app/utils/booleanUtils";
 
 export default function FilterDialog(props: {
   dialog: DialogType;
@@ -14,7 +16,7 @@ export default function FilterDialog(props: {
   payers: Payers;
   budgets: Budgets;
   paymentMethods: PaymentMethods;
-  initialValue: any;
+  initialValue: FilterCondition;
   applyFilterConditions: (newValue: FilterCondition) => void;
 }) {
   const {
@@ -87,7 +89,9 @@ export default function FilterDialog(props: {
         <select
           onChange={(e) => onChangeCategory(e)}
           multiple
-          defaultValue={initialValue.categoryIdList}
+          defaultValue={convertNumberArrayToStringArray(
+            initialValue.categoryIdList
+          )}
         >
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -102,7 +106,9 @@ export default function FilterDialog(props: {
         <select
           onChange={(e) => onChangePaymentMethod(e)}
           multiple
-          defaultValue={initialValue.paymentMethodIdList}
+          defaultValue={convertNumberArrayToStringArray(
+            initialValue.paymentMethodIdList
+          )}
         >
           {paymentMethods.map((paymentMethod) => (
             <option key={paymentMethod.id} value={paymentMethod.id}>
@@ -117,7 +123,9 @@ export default function FilterDialog(props: {
         <select
           onChange={(e) => onChangeBudget(e)}
           multiple
-          defaultValue={initialValue.budgetIdList}
+          defaultValue={convertNumberArrayToStringArray(
+            initialValue.budgetIdList
+          )}
         >
           {budgets.map((budget) => (
             <option key={budget.id} value={budget.id}>
@@ -132,7 +140,9 @@ export default function FilterDialog(props: {
         <select
           onChange={(e) => onChangeIsProcessed(e)}
           multiple
-          defaultValue={initialValue.isProcessedList}
+          defaultValue={convertBooleanArrayToStringArray(
+            initialValue.isProcessedList
+          )}
         >
           {[
             { label: "精算済", value: true },
