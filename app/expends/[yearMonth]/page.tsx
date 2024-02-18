@@ -10,6 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ControlPanel from "./components/control-panel/ControlPanel";
 import { useDialog } from "../../shared/dialog";
+import { FilterCondition } from "./page.type";
 import AddExpendsDialog from "./components/add-expends-dialog/addExpendsDialog";
 import UpdateExpendsDialog from "./components/update-expends-dialog/updateExpendsDialog";
 import FilterDialog from "./components/filter-dialog/FilterDialog";
@@ -71,12 +72,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
       processed: false,
     });
 
-  const [filterConditions, setFilterConditions] = useState<{
-    categoryIdList: number[];
-    budgetIdList: number[];
-    paymentMethodIdList: number[];
-    isProcessedList: boolean[];
-  }>({
+  const [filterConditions, setFilterConditions] = useState<FilterCondition>({
     categoryIdList: [],
     budgetIdList: [],
     paymentMethodIdList: [],
@@ -170,7 +166,7 @@ export default function Expends({ params }: { params: { yearMonth: string } }) {
    * 引数で渡される条件でフィルターを適用する
    * @param payload - フィルター条件
    */
-  function applyFilterConditions(payload: any): void {
+  function applyFilterConditions(payload: FilterCondition): void {
     setFilterConditions(payload);
     closeFilterDialog();
   }

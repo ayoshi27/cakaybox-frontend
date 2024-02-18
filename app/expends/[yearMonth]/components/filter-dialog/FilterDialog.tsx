@@ -5,6 +5,7 @@ import { Categories } from "@/app/shared/hooks/useAllCategoriesQuery";
 import { Payers } from "@/app/shared/hooks/useAllPayersQuery";
 import { Budgets } from "@/app/shared/hooks/useAllBudgetsQuery";
 import { PaymentMethods } from "@/app/shared/hooks/useAllPaymentMethodsQuery";
+import { FilterCondition } from "@/app/expends/[yearMonth]/page.type";
 
 export default function FilterDialog(props: {
   dialog: DialogType;
@@ -14,7 +15,7 @@ export default function FilterDialog(props: {
   budgets: Budgets;
   paymentMethods: PaymentMethods;
   initialValue: any;
-  applyFilterConditions: (newValue: any) => void;
+  applyFilterConditions: (newValue: FilterCondition) => void;
 }) {
   const {
     dialog: Dialog,
