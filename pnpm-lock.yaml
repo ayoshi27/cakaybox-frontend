@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ayoshi27/cakaybox-contract':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.14)(react@18.2.0)
@@ -80,6 +83,13 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /@ayoshi27/cakaybox-contract@1.0.0:
+    resolution: {integrity: sha512-70mKYsEHKSC2+iZM4QmAGfJJM1TS9GhNX6k26e60iB5SAQNgrfr6hNeXqxP3BgfIismvDx8CB3Zf6DWWgj68Ew==, tarball: https://npm.pkg.github.com/download/@ayoshi27/cakaybox-contract/1.0.0/80f984d6e63194f4b1cb727194e9c038c113f449}
+    dependencies:
+      '@ts-rest/core': 3.33.0(zod@3.22.4)
+      zod: 3.22.4
+    dev: false
 
   /@babel/code-frame@7.22.5:
     resolution: {integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ==}

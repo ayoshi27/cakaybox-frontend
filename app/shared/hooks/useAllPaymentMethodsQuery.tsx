@@ -1,5 +1,5 @@
 import { ClientInferResponseBody } from "@ts-rest/core";
-import { contract } from "@/lib/contract";
+import { contract } from "@ayoshi27/cakaybox-contract";
 import { client } from "@/lib/query";
 
 export type PaymentMethods = ClientInferResponseBody<
