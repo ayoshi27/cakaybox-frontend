@@ -12,7 +12,7 @@ export function useAllPaymentMethodsQuery() {
   const { data, isLoading, error, refetch } =
     client.paymentMethods.getList.useQuery(["paymentMethods"]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 

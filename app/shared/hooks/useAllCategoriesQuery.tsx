@@ -12,12 +12,12 @@ export function useAllCategoriesQuery() {
   const { data, isLoading, error, refetch } =
     client.categories.getList.useQuery(["categories"]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 
   return {
-    data: data.body,
+    data: data?.body,
     isLoading,
     error,
     refetch,

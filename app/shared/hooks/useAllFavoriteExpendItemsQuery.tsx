@@ -12,7 +12,7 @@ export function useAllFavoriteExpendItemsQuery() {
   const { data, isLoading, error, refetch } =
     client.favoriteExpendItem.getList.useQuery(["favoriteExpendItem"]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 

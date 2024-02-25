@@ -13,12 +13,12 @@ export function useAllPayersQuery() {
     "payers",
   ]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 
   return {
-    data: data.body,
+    data: data?.body,
     isLoading,
     error,
     refetch,

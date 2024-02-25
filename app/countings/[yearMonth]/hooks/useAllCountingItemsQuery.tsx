@@ -12,7 +12,7 @@ export function useAllCountingItemsQuery() {
   const { data, isLoading, error, refetch } =
     client.countingItems.getList.useQuery(["countingItems"]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 

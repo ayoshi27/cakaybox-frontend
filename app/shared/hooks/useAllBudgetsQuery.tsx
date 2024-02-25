@@ -13,7 +13,7 @@ export function useAllBudgetsQuery() {
     "budgets",
   ]);
 
-  if (data?.status !== 200) {
+  if (data && data.status !== 200) {
     throw new Error("could not get data");
   }
 
